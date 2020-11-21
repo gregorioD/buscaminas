@@ -40,6 +40,7 @@ void crearBaseDeDatos(PDB database);
 void crearUsuario(PUsuario user);
 void GuardarPartida (PPartida match, int dif, int score, int dia, int mes, int anio);
 void obtenerFecha (Pfecha date);
+int QueMesEs(char mes[3]);
 
 Fecha crearFecha();
 void nuevaPartida(Usuario usr);
