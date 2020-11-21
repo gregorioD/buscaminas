@@ -18,7 +18,7 @@ typedef struct Partida* PPartida;
 struct Usuario{
 	char nombre[11], contrasena[13];
 	double perdidas, ganadas, abandonos;
-	PPartida partidas;
+	PPartida partidasfacil, partidasmedio, partidasdificil;
 	// un array dinamico puede venir bien para almacenar los objetos de tipo Partida, 
 	//es decir con la 
 	// informacion de las partidas de cada dificultad para cada usuario. 
@@ -42,7 +42,6 @@ void GuardarPartida (PPartida match, int dif, int score, int dia, int mes, int a
 void obtenerFecha (Pfecha date);
 int QueMesEs(char mes[3]);
 
-Fecha crearFecha();
 void nuevaPartida(Usuario usr);
 Usuario nuevoUsuario(char * nomb, char * contra);
 bool correcto(char nombre[11], char contra[13]);
