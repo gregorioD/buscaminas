@@ -40,7 +40,9 @@ void crearUsuario(PUsuario user){
 	for (int i = 0; i<13; i++){
 		user -> contrasena[i] = pwrd[i];
 	}
-	user -> partidas = new Partida[30];
+	user -> partidasfacil = new Partida[10];
+	user -> partidasmedio = new Partida[10]:
+	user -> partidasdificil = new Partida[10];
 	user -> perdidas = 0;
 	user -> ganadas = 0;
 	user -> abandonos = 0;
