@@ -16,6 +16,7 @@ struct Partida{
 typedef struct Partida* PPartida;
 
 struct Usuario{
+	int gan, perd, ab;
 	char nombre[11], contrasena[13];
 	double perdidas, ganadas, abandonos;
 	PPartida partidas;
