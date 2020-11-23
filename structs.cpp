@@ -14,48 +14,62 @@ void crearBaseDeDatos(PDB database){
 	database -> usuarios = new Usuario[100];
 }
 void crearUsuario(PDB database){
-	
+	int cont = 0;
 	PUsuario user = &(database -> usuarios[database -> cantidad_usuarios]);
-	char nombre[11], contrasena[13];
-	bool correcto = false;
-	cout<<"Ingrese su nombre: ";
-	gets(nombre);
-	while (!correcto){
-		if (strlen(nombre) >= 8 && strlen(nombre)<11){
-			cout <<"Su nombre es: "<<nombre;
-			correcto = true;
-		}else{
-			cout<<"Error. Vuelva a ingresar su nombre: ";
-			gets(nombre);
-			cout<<endl;
+	char nombre[11], n[11], contrasena[13];
+		bool correcto = false;
+	if ((database -> cantidad_usuarios) < 100){
+		cout<<"Ingrese su nombre: ";
+		gets(nombre);
+		while (!correcto){
+			if (strlen(nombre) >= 8 && strlen(nombre)<11){
+				correcto = true;
+				for (int i = 0; i<siezof(nombre); i++){
+					if(!isalnum(nombre[i]) correcto = false;
+				}
+				while(correcto && cont < (database -> cantidad_usuarios)){
+					n = database -> usuarios[cont].nombre;
+					if(strcmp(nombre, n)==0) correcto = false;
+					else cont ++;
+				}
+			}else{
+				cout<<"Error. Vuelva a ingresar su nombre: ";
+				gets(nombre);
+				cout<<endl;
+			}
 		}
-	}
-	correcto = false;
-	cout<<"Ingrese su contrasena: ";
-	gets(contrasena);
-	while (!correcto){
-		if (strlen(contrasena) > 0 && strlen(contrasena)<13){
-			cout <<"Su contrasena es: "<<contrasena;
-			correcto = true;
-		}else{
-			cout<<"Error. Vuelva a ingresar su contrasena."<<endl;
-			gets(contrasena);
+		cout <<"Su nombre es: "<<nombre;
+		correcto = false;
+		cout<<"Ingrese su contrasena: ";
+		gets(contrasena);
+		while (!correcto){
+			if (strlen(contrasena) > 0 && strlen(contrasena)<13){
+				cout <<"Su contrasena es: "<<contrasena;
+				correcto = true;
+				for (int i = 0; i<siezof(contrasena); i++){
+					if(!isalnum(contrasena[i]) correcto = false;
+				}
+			}else{
+				cout<<"Error. Vuelva a ingresar su contrasena."<<endl;
+				gets(contrasena);
+			}
 		}
-	}
-	for (int i = 0; i<strlen(nombre); i++){
-		user -> nombre[i] = nombre[i];
-	}
-	for (int i = 0; i<strlen(contrasena); i++){
-		user -> contrasena[i] = contrasena[i];
-	}
-	user -> partidasfacil = new Partida[10];
-	user -> partidasmedio = new Partida[10];
-	user -> partidasdificil = new Partida[10];
-	user -> perdidas = 0;
-	user -> ganadas = 0;
-	user -> abandonos = 0;
-
-	database -> cantidad_usuarios++;
+		for (int i = 0; i<strlen(nombre); i++){
+			user -> nombre[i] = nombre[i];
+		}
+		for (int i = 0; i<strlen(contrasena); i++){
+			user -> contrasena[i] = contrasena[i];
+		}
+		user -> partidasfacil = new Partida[10];
+		user -> partidasmedio = new Partida[10];
+		user -> partidasdificil = new Partida[10];
+		user -> perdidas = 0;
+		user -> ganadas = 0;
+		user -> abandonos = 0;
+		database -> cantidad_usuarios++;
+		}else{
+			cout<<"Error. Ya se alcanzo la cantidad maxima de usuarios."<<endl;
+		}		
 
 }
 void GuardarPartida (PPartida match, int dif, int score, char tipo){
