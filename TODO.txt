@@ -27,3 +27,6 @@ Implementaciones de funciones ya creadas:
 Otres coses:
 
 - ingeniero mira lo de delete, pq capaz nos cagan a pedo por usar news sin los delete (crearDB)
+
+- hay que cambiar lo del read y revisar si esta bien puesta la funcion gets, ya que no aparece
+como definida y por eso no compila
