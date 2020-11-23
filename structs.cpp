@@ -41,7 +41,7 @@ void crearUsuario(PUsuario user){
 		user -> contrasena[i] = pwrd[i];
 	}
 	user -> partidasfacil = new Partida[10];
-	user -> partidasmedio = new Partida[10]:
+	user -> partidasmedio = new Partida[10];
 	user -> partidasdificil = new Partida[10];
 	user -> perdidas = 0;
 	user -> ganadas = 0;
@@ -59,7 +59,7 @@ void GuardarPartida (PPartida match, int dif, int score, char tipo){
 	match -> puntaje = score;
 	match -> tipo = tipo;
 }
-void obtenerFecha(PFecha date){
+void obtenerFecha(Pfecha date){
 	
 	int dig0, dig1, dig2, dig3, mes, anio, dia;
 	char fecha[25], nombreMes[3];
