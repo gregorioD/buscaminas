@@ -16,7 +16,7 @@ void crearBaseDeDatos(PDB database){
 void crearUsuario(PDB database){
 	int cont = 0;
 	PUsuario user = &(database -> usuarios[database -> cantidad_usuarios]);
-	char nombre[11], n[11], contrasena[13];
+	char nombre[11], *n, contrasena[13];
 		bool correcto = false;
 	if ((database -> cantidad_usuarios) < 100){
 		cout<<"Ingrese su nombre: ";
@@ -24,10 +24,13 @@ void crearUsuario(PDB database){
 		while (!correcto){
 			if (strlen(nombre) >= 8 && strlen(nombre)<11){
 				correcto = true;
-				for (int i = 0; i<siezof(nombre); i++){
-					if(!isalnum(nombre[i]) correcto = false;
+				for (int i = 0; i<sizeof(nombre); i++){
+					if(!isalnum(nombre[i])) correcto = false;
 				}
 				while(correcto && cont < (database -> cantidad_usuarios)){
+					// tiraba error querer pasarle asi el nombre de usuario a n, por eso
+					// defini a n como *n en vez de n[11], pero supongo que la caca fue no usar
+					//strcopy
 					n = database -> usuarios[cont].nombre;
 					if(strcmp(nombre, n)==0) correcto = false;
 					else cont ++;
@@ -46,8 +49,8 @@ void crearUsuario(PDB database){
 			if (strlen(contrasena) > 0 && strlen(contrasena)<13){
 				cout <<"Su contrasena es: "<<contrasena;
 				correcto = true;
-				for (int i = 0; i<siezof(contrasena); i++){
-					if(!isalnum(contrasena[i]) correcto = false;
+				for (int i = 0; i<sizeof(contrasena); i++){
+					if(!isalnum(contrasena[i])) correcto = false;
 				}
 			}else{
 				cout<<"Error. Vuelva a ingresar su contrasena."<<endl;
@@ -182,9 +185,9 @@ Usuario AbrirUsuario (PDB database){
 		cout<<"Ingrese nombre de usuario: ";
 		gets(nombre);
 		while(!encontrado && cont < QU){
-			longitud = strlen(database->usuario[cont].nombre);
+			longitud = strlen(database->usuarios[cont].nombre);
 			while (i < longitud){
-				n[i++]= database -> usuario[cont].nombre[i];
+				n[i++]= database -> usuarios[cont].nombre[i];
 			}
 			n[i] = '\0';
 			i = 0;
@@ -193,16 +196,16 @@ Usuario AbrirUsuario (PDB database){
 		}
 	}
 	while(!coincide){
-		longitud = strlen(database -> usuario[cont].contrasena);
+		longitud = strlen(database -> usuarios[cont].contrasena);
 		while (i < longitud){
-			p[i++] = database -> usuario[cont].contrasena[i];
+			p[i++] = database -> usuarios[cont].contrasena[i];
 		}
 		cout<<"Ingrese su contraseña: ";
 		gets(pwrd);
-		if (strcmp(pwrd, p)==0) coinciden = true;
+		if (strcmp(pwrd, p)==0) coincide = true;
 		else cout<<"Contraseña incorrecta, por favor, intente de nuevo."<<endl;
 	}	
-	if (encontrado && coincide) user = database -> usuario[cont];
+	if (encontrado && coincide) user = database -> usuarios[cont];
 	
 	return user;
 }
