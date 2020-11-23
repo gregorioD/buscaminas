@@ -159,8 +159,18 @@ void guardarDB(PDB database){
 
 }
 
-
-
+DB AbrirBaseDeDatos(){
+	DB database;
+	ifstream archivo;
+	archivo.open("basededatos.dat",ios::binary);
+	if(!archivo.fail()){
+		archivo.read((PDB) database, sizeof(database));
+		archivo.close();
+	}else{
+		puts("Error al abrir el archivo.");
+	}
+	return database;
+}
 
 
 
