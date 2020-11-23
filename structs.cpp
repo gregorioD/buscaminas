@@ -173,7 +173,39 @@ void guardarDB(PDB database){
 
 }
 
-
+Usuario AbrirUsuario (PDB database){
+	Usuario user;
+	int QU = database -> cantidad_usuarios, cont = 0, i = 0, longitud;
+	char nombre[11], n[11], pwrd[13], p[13];
+	bool encontrado = false, coincide = false;
+	while(!encontrado){
+		cout<<"Ingrese nombre de usuario: ";
+		gets(nombre);
+		while(!encontrado && cont < QU){
+			longitud = strlen(database->usuario[cont].nombre);
+			while (i < longitud){
+				n[i++]= database -> usuario[cont].nombre[i];
+			}
+			n[i] = '\0';
+			i = 0;
+			if (strcmp(nombre, n)==0) encontrado = true;
+			else cont++;
+		}
+	}
+	while(!coincide){
+		longitud = strlen(database -> usuario[cont].contrasena);
+		while (i < longitud){
+			p[i++] = database -> usuario[cont].contrasena[i];
+		}
+		cout<<"Ingrese su contraseña: ";
+		gets(pwrd);
+		if (strcmp(pwrd, p)==0) coinciden = true;
+		else cout<<"Contraseña incorrecta, por favor, intente de nuevo."<<endl;
+	}	
+	if (encontrado && coincide) user = database -> usuario[cont];
+	
+	return user;
+}
 
 
 
