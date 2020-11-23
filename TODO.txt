@@ -20,3 +20,5 @@ Implementaciones de funciones ya creadas:
  Funciones y caca nueva:
 
  - Definir la forma de asignar puntajes
+ - como pindonga vamos a manejar el archivo 
+ - 
