@@ -14,31 +14,37 @@ void crearBaseDeDatos(PDB database){
 	database -> usuarios = new Usuario[100];
 }
 void crearUsuario(PUsuario user){
-	char name[11], pwrd[13], c;
-	int i = 0;
+	char nombre[11], contrasena[13];
 	bool correcto = false;
-	puts("Ingrese su nuevo nombre: ");
-	while(c = getchar() != '\n'){
-		if (i<10) name[i++] = c;
-	}
-	i = 0;
-	cout<<"Su nombre es: ";
-	puts(name);
-	puts("Ingrese su contrasenia: ");
-	while(!correcto){
-		while(c = getchar() != '\n'){
-			if (i<12) pwrd[i++] = c;
+	cout<<"Ingrese su nombre: ";
+	gets(nombre);
+	while (!correcto){
+		if (strlen(nombre) >= 8 && strlen(nombre)<11){
+			cout <<"Su nombre es: "<<nombre;
+			correcto = true;
+		}else{
+			cout<<"Error. Vuelva a ingresar su nombre: ";
+			gets(nombre);
+			cout<<endl;
 		}
-		if (strlen(pwrd)>=8) correcto = true;
-		else cout<<"Contrasenia invalida, por favor intente otra vez."<<endl;
 	}
-	cout<<"Su contrasenia es: ";
-	puts(pwrd);
-	for (int i = 0; i<11; i++){
-		user -> nombre[i] = name[i];
+	correcto = false;
+	cout>>"Ingrese su contrasena: ";
+	gets(contrasena);
+	while (!correcto){
+		if (strlen(contrasena) > 0 && strlen(contrasena)<13){
+			cout <<"Su contrasena es: "<<contrasena;
+			correcto = true;
+		}else{
+			cout<<"Error. Vuelva a ingresar su contrasena."<<endl;
+			gets(contrasena);
+		}
 	}
-	for (int i = 0; i<13; i++){
-		user -> contrasena[i] = pwrd[i];
+	for (int i = 0; i<strlen(nombre); i++){
+		user -> nombre[i] = nombre[i];
+	}
+	for (int i = 0; i<strlen(contrasena); i++){
+		user -> contrasena[i] = contrasena[i];
 	}
 	user -> partidasfacil = new Partida[10];
 	user -> partidasmedio = new Partida[10];
