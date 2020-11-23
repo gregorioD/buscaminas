@@ -173,7 +173,48 @@ void guardarDB(PDB database){
 
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 DB AbrirBaseDeDatos(){
+
 	DB database;
 	ifstream archivo;
 	archivo.open("basededatos.dat",ios::binary);
