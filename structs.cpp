@@ -13,7 +13,9 @@ void crearBaseDeDatos(PDB database){
 	database -> cantidad_usuarios = 0;
 	database -> usuarios = new Usuario[100];
 }
-void crearUsuario(PUsuario user){
+void crearUsuario(PDB database){
+	
+	PUsuario user = &(database -> usuarios[database -> cantidad_usuarios]);
 	char nombre[11], contrasena[13];
 	bool correcto = false;
 	cout<<"Ingrese su nombre: ";
@@ -29,7 +31,7 @@ void crearUsuario(PUsuario user){
 		}
 	}
 	correcto = false;
-	cout>>"Ingrese su contrasena: ";
+	cout<<"Ingrese su contrasena: ";
 	gets(contrasena);
 	while (!correcto){
 		if (strlen(contrasena) > 0 && strlen(contrasena)<13){
@@ -52,6 +54,9 @@ void crearUsuario(PUsuario user){
 	user -> perdidas = 0;
 	user -> ganadas = 0;
 	user -> abandonos = 0;
+
+	database -> cantidad_usuarios++;
+
 }
 void GuardarPartida (PPartida match, int dif, int score, char tipo){
 	// Cambie la funcion para aprovechar que pasaste todo a punteros,
@@ -146,7 +151,13 @@ void partidaAUsuario(PPartida match, PUsuario usr){
 
 
 
+void guardarDB(PDB database){
+	// tiene que crear si no lo hay un archivo binario y guardarle la base de datos
+	// en caso de que el archivo ya exista se le sobreescribe la base de datos,
+	// asi se puede llamar a la misma funcion cada vez que se quiera guardar algo
 
+
+}
 
 
 

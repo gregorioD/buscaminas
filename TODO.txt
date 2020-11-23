@@ -11,7 +11,7 @@ Implementaciones de funciones ya creadas:
 
  - meter la base de datos en un archivo y poder actualizarla y modificarla con usrs y partidas 
  nuevas
- 
+
 
 
 
@@ -22,3 +22,8 @@ Implementaciones de funciones ya creadas:
  - Definir la forma de asignar puntajes
  - como pindonga vamos a manejar el archivo 
  - 
+
+
+Otres coses:
+
+- ingeniero mira lo de delete, pq capaz nos cagan a pedo por usar news sin los delete (crearDB)
