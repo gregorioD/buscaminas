@@ -15,11 +15,18 @@ struct Partida{
 
 typedef struct Partida* PPartida;
 
+struct Cola{
+	PPartida partidas[10];
+	int comienzo, tl;
+};
+
+typedef struct Cola* PCola;
+
 struct Usuario{
 	int gan, perd, ab;
 	char nombre[11], contrasena[13];
 	double perdidas, ganadas, abandonos;
-	Cola colafacil, colamed, coladif;
+	PCola colafacil, colamed, coladif;
 	// un array dinamico puede venir bien para almacenar los objetos de tipo Partida, 
 	//es decir con la 
 	// informacion de las partidas de cada dificultad para cada usuario. 
@@ -34,12 +41,7 @@ struct DB{
 	int cantidad_usuarios=0;
 };
 
-struct Cola{
-	PPartida partidas[10];
-	int comienzo, tl;
-};
 
-typedef struct Cola* PCola;
 
 typedef struct DB* PDB;
 
@@ -53,4 +55,17 @@ int QueMesEs(char mes[3]);
 void nuevaPartida(Usuario usr);
 Usuario nuevoUsuario(char * nomb, char * contra);
 bool correcto(char nombre[11], char contra[13]);
+Usuario AbrirUsuario (PDB database);
+DB AbrirBaseDeDatos();
+void crearCola(PCola col);
+void sumarCola(PCola col, PPartida partida);
+void reiniciarCola(PCola col);
+PPartida cargarPartCola(PUsuario usr, int dificultad, int indice);
+void borrarHistorial(PUsuario usr);
+
+
+
+
+
+
 

@@ -73,12 +73,12 @@ void crearUsuario(PDB database){
 		for (int i = 0; i<strlen(contrasena); i++){
 			user -> contrasena[i] = contrasena[i];
 		}
-		user -> partidasfacil = new Partida[10];
-		user -> partidasmedio = new Partida[10];
-		user -> partidasdificil = new Partida[10];
 		user -> perdidas = 0;
 		user -> ganadas = 0;
 		user -> abandonos = 0;
+		crearCola(user -> colafacil);
+		crearCola(user -> colamed);
+		crearCola(user -> coladif);
 		database -> cantidad_usuarios++;
 		}else{
 			cout<<"Error. Ya se alcanzo la cantidad maxima de usuarios."<<endl;
@@ -176,6 +176,21 @@ void partidaAUsuario(PPartida match, PUsuario usr){
 		usr -> ganadas = usr -> gan * 100.0 / total;	
 		usr -> perdidas = usr -> perd * 100.0 / total;
 		usr -> abandonos = usr -> ab * 100.0 / total;
+
+		// guarda en las colas de ultimas partidas del usuario
+		switch (match -> dificultad){
+		
+		case 1:
+			sumarCola(usr -> colafacil, match);
+			break;
+		
+		case 2:
+			sumarCola(usr -> colamed, match);
+			break;
+		case 3: 
+			sumarCola(usr -> coladif, match);
+			break;
+		}
 }
 
 
@@ -261,10 +276,25 @@ void reiniciarCola(PCola col){
 	for (int i =0; i<10; i++) col -> partidas[i] = NULL;
 }
 
+PPartida cargarPartCola(PUsuario usr, int dificultad, int indice){
+	// devuelve un puntero partida de la cola determinada por dificultad en la posicion indice
+	// dif 1,2 o 3 e indice 0-9
+	PPartida part;
+	if (dificultad==1){
+		part = usr -> colafacil->partidas[(usr -> colafacil->comienzo + indice)%10];
+	}else if (dificultad==2){
+		part = usr -> colamed->partidas[(usr -> colamed->comienzo + indice)%10];
+	}else part = usr -> coladif->partidas[(usr -> coladif->comienzo + indice)%10];
 
+	return part;
+}
 
-
-
+void borrarHistorial(PUsuario usr){
+	// borra todas las partidas guardadas del usuario, pero mantiene los porcentajes
+	reiniciarCola(usr -> colafacil);
+	reiniciarCola(usr -> colamed);
+	reiniciarCola(usr -> coladif);
+}
 
 
 
