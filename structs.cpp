@@ -3,15 +3,25 @@
 #include <fstream>
 #include <cstring>
 #include <ctime>
-#include <time.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 
 using namespace std;
 
+
+bool ExisteBDD(){
+	bool resultado = false;
+	ifstream archivo;
+	archivo.open("basededatos.dat", ios::binary);
+	if (!archivo.fail()){
+		if(!archivo.eof()) resultado = true;
+	}
+	return resultado;
+}
+
+
 void crearBaseDeDatos(PDB database){
 	database -> cantidad_usuarios = 0;
-	database -> usuarios = new Usuario[100];
 }
 void crearUsuario(PDB database){
 	int cont = 0;
@@ -20,7 +30,7 @@ void crearUsuario(PDB database){
 		bool correcto = false;
 	if ((database -> cantidad_usuarios) < 100){
 		cout<<"Ingrese su nombre: ";
-		gets(nombre);
+		//gets(nombre);
 		while (!correcto){
 			if (strlen(nombre) >= 8 && strlen(nombre)<11){
 				correcto = true;
@@ -37,14 +47,14 @@ void crearUsuario(PDB database){
 				}
 			}else{
 				cout<<"Error. Vuelva a ingresar su nombre: ";
-				gets(nombre);
+				//gets(nombre);
 				cout<<endl;
 			}
 		}
 		cout <<"Su nombre es: "<<nombre;
 		correcto = false;
 		cout<<"Ingrese su contrasena: ";
-		gets(contrasena);
+		//gets(contrasena);
 		while (!correcto){
 			if (strlen(contrasena) > 0 && strlen(contrasena)<13){
 				cout <<"Su contrasena es: "<<contrasena;
@@ -54,7 +64,7 @@ void crearUsuario(PDB database){
 				}
 			}else{
 				cout<<"Error. Vuelva a ingresar su contrasena."<<endl;
-				gets(contrasena);
+				//gets(contrasena);
 			}
 		}
 		for (int i = 0; i<strlen(nombre); i++){
@@ -103,7 +113,7 @@ void obtenerFecha(Pfecha date){
 		nombreMes[i] = fecha[i+4];
 	}
 	mes = QueMesEs(nombreMes);
-	date -> mes = mes
+	date -> mes = mes;
 	dig0 = (int)fecha[20] - 48;
 	dig1 = (int)fecha[21] -48;
 	dig2 = (int)fecha[22] -48;
@@ -155,6 +165,8 @@ int QueMesEs(char mes[3]){
 }
 
 void partidaAUsuario(PPartida match, PUsuario usr){
+		// pasa los datos de una nueva partida al usuario (falta que la guarde en uno de los
+		// arreglos de partida de forma temporal)
 		if (match -> tipo == 'G') usr -> gan++;
 		else if (match -> tipo == 'P') usr -> perd++;
 		else usr -> ab++;
@@ -172,6 +184,14 @@ void guardarDB(PDB database){
 	// tiene que crear si no lo hay un archivo binario y guardarle la base de datos
 	// en caso de que el archivo ya exista se le sobreescribe la base de datos,
 	// asi se puede llamar a la misma funcion cada vez que se quiera guardar algo
+	ofstream archivo;
+	archivo.open("basededatos.dat",ios::binary);
+	if(!archivo.fail()){
+		archivo.write((char*) database, sizeof(*database));
+		archivo.close();
+	}else{
+		cout<<"Error al abrir el archivo."<<endl;
+	}
 
 
 }
@@ -183,7 +203,7 @@ Usuario AbrirUsuario (PDB database){
 	bool encontrado = false, coincide = false;
 	while(!encontrado){
 		cout<<"Ingrese nombre de usuario: ";
-		gets(nombre);
+		//gets(nombre);
 		while(!encontrado && cont < QU){
 			longitud = strlen(database->usuarios[cont].nombre);
 			while (i < longitud){
@@ -201,7 +221,7 @@ Usuario AbrirUsuario (PDB database){
 			p[i++] = database -> usuarios[cont].contrasena[i];
 		}
 		cout<<"Ingrese su contraseña: ";
-		gets(pwrd);
+		//gets(pwrd);
 		if (strcmp(pwrd, p)==0) coincide = true;
 		else cout<<"Contraseña incorrecta, por favor, intente de nuevo."<<endl;
 	}	
@@ -212,55 +232,66 @@ Usuario AbrirUsuario (PDB database){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 DB AbrirBaseDeDatos(){
-
 	DB database;
 	ifstream archivo;
 	archivo.open("basededatos.dat",ios::binary);
 	if(!archivo.fail()){
-		archivo.read((PDB) database, sizeof(database));
+		archivo.read((char*) &database, sizeof(database));
 		archivo.close();
 	}else{
 		puts("Error al abrir el archivo.");
 	}
 	return database;
 }
+
+void crearCola(PCola col){
+	col -> comienzo = 0;
+	col -> tl = 0;
+}
+
+void sumarCola(PCola col, PPartida partida){
+	col -> partidas[(col -> tl + col -> comienzo)%10] = partida;
+	if (col -> tl==10) col -> comienzo++;
+	else col -> tl++;
+}
+
+void reiniciarCola(PCola col){
+	crearCola(col);
+	for (int i =0; i<10; i++) col -> partidas[i] = NULL;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

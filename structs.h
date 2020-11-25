@@ -19,7 +19,7 @@ struct Usuario{
 	int gan, perd, ab;
 	char nombre[11], contrasena[13];
 	double perdidas, ganadas, abandonos;
-	PPartida partidasfacil, partidasmedio, partidasdificil;
+	Cola colafacil, colamed, coladif;
 	// un array dinamico puede venir bien para almacenar los objetos de tipo Partida, 
 	//es decir con la 
 	// informacion de las partidas de cada dificultad para cada usuario. 
@@ -30,9 +30,16 @@ struct Usuario{
 typedef struct Usuario* PUsuario;
 
 struct DB{
-	PUsuario usuarios;
+	Usuario usuarios[100];
 	int cantidad_usuarios=0;
 };
+
+struct Cola{
+	PPartida partidas[10];
+	int comienzo, tl;
+};
+
+typedef struct Cola* PCola;
 
 typedef struct DB* PDB;
 

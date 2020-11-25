@@ -21,6 +21,9 @@ Implementaciones de funciones ya creadas:
 
  - Definir la forma de asignar puntajes // por tiempo 
  - como pindonga vamos a manejar el archivo 
+ - struct de cola para las 10 partidas de cada nivel
+ - verificacion de usuarios repetidos
+ 
 
 
 Otres coses:
