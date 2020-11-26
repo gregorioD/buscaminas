@@ -7,8 +7,7 @@
 #include <cstdio>
 
 using namespace std;
-
-
+// Crear archivo si no existe; 
 bool ExisteBDD(PDB database){
 	bool resultado = false;
 	ifstream archivo;
@@ -31,77 +30,85 @@ bool ExisteBDD(PDB database){
 	return resultado;
 }
 
-
 void crearBaseDeDatos(PDB database){
 	database -> cantidad_usuarios = 0;
+	ofstream archivo;
+	archivo.open("usuarios.bin", ios::binary);
+	if(!archivo.fail()){
+		archivo.write((char*) database, sizeof(*database));
+		archivo.close();
+	}else{
+		cout<<"Error. crearBaseDeDatos"<<endl;
+	}
 }
 void crearUsuario(PDB database){
-	int cont = 0;
-	PUsuario user = &(database -> usuarios[database -> cantidad_usuarios]);
-	char nombre[11], *n, contrasena[13];
-		bool correcto = false;
-	if ((database -> cantidad_usuarios) < 100){
+	int cont = 0, QUsuarios = database -> cantidad_usuarios;
+	Usuario user = database -> usuarios[database -> cantidad_usuarios];
+	PUsuario Puser = &user;
+	char nombre[11], n[11], contrasena[13];
+	bool correcto = false, tamanoCorrecto = false, esAlNum = true, esUnic = true;
+	if (QUsuarios < 100){
+		cin.ignore(1000, '\n');
 		cout<<"Ingrese su nombre: ";
-		//gets(nombre);
-		while (!correcto){
-			if (strlen(nombre) >= 8 && strlen(nombre)<11){
+		gets(nombre);
+		while(!correcto){
+			if(strlen(nombre)>7 && strlen(nombre) <11){
+				tamanoCorrecto = true;
+			}
+			while(esAlNum && cont<strlen(nombre)){
+				if(!isalnum(nombre[cont])) esAlNum = false;
+				else cont++;
+			}
+			cont = 0;
+			if(QUsuarios > 0){
+				while(esUnic && cont < QUsuarios){
+					strcpy(n, database -> usuarios[cont].nombre);
+					if(strcmp(nombre, n)==0) esUnic = false;
+					else cont++;
+				}
+				cont = 0;
+			}
+			if (tamanoCorrecto && esAlNum && esUnic){
 				correcto = true;
-				for (int i = 0; i<sizeof(nombre); i++){
-					if(!isalnum(nombre[i])) correcto = false;
-				}
-				while(correcto && cont < (database -> cantidad_usuarios)){
-					// tiraba error querer pasarle asi el nombre de usuario a n, por eso
-					// defini a n como *n en vez de n[11], pero supongo que la caca fue no usar
-					//strcopy
-					n = database -> usuarios[cont].nombre;
-					if(strcmp(nombre, n)==0) correcto = false;
-					else cont ++;
-				}
-			}else{
-				cout<<"Error. Vuelva a ingresar su nombre: ";
-				//gets(nombre);
-				cout<<endl;
 			}
 		}
 		cout <<"Su nombre es: "<<nombre;
 		correcto = false;
+		tamanoCorrecto = false;
+		esAlNum = true;
+		cin.ignore(1000, '\n');
 		cout<<"Ingrese su contrasena: ";
-		//gets(contrasena);
+		gets(contrasena);
 		while (!correcto){
 			if (strlen(contrasena) > 0 && strlen(contrasena)<13){
-				cout <<"Su contrasena es: "<<contrasena;
+				tamanoCorrecto = true;
+			}
+			while(esAlNum && cont<strlen(contrasena)){
+				if(!isalnum(contrasena[cont])) esAlNum = false;
+				else cont++;
+			}
+			if (esAlNum && tamanoCorrecto){
 				correcto = true;
-				for (int i = 0; i<sizeof(contrasena); i++){
-					if(!isalnum(contrasena[i])) correcto = false;
-				}
-			}else{
-				cout<<"Error. Vuelva a ingresar su contrasena."<<endl;
-				//gets(contrasena);
+				cout<<"Su contrasena es: "<<contrasena<<endl;
 			}
 		}
-		for (int i = 0; i<strlen(nombre); i++){
-			user -> nombre[i] = nombre[i];
-		}
-		for (int i = 0; i<strlen(contrasena); i++){
-			user -> contrasena[i] = contrasena[i];
-		}
-		user -> perdidas = 0;
-		user -> ganadas = 0;
-		user -> abandonos = 0;
+		strcpy((Puser -> nombre), nombre);
+		strcpy((Puser -> contrasena), contrasena);
+		Puser -> perdidas = 0;
+		Puser -> ganadas = 0;
+		Puser -> abandonos = 0;
 		database -> cantidad_usuarios++;
-		}else{
-			cout<<"Error. Ya se alcanzo la cantidad maxima de usuarios."<<endl;
-		}		
-
+		}
 }
 void GuardarPartida (PPartida match, int dif, int score, char tipo){
 	// Cambie la funcion para aprovechar que pasaste todo a punteros,
 	// ahora lo que hace es generar una fecha nueva con cada nueva partida
 	// y despues le asigna al puntero de fecha de la partida el valor de memoria
 	// de la nueva fecha uwu
-	Pfecha date;
-	obtenerFecha(date);
-	match -> fecha = date;
+	Fecha date;
+	Pfecha punterodate = &date;
+	obtenerFecha(punterodate);
+	match -> fecha = punterodate;
 	match -> dificultad = dif;
 	match -> puntaje = score;
 	match -> tipo = tipo;
@@ -174,18 +181,13 @@ int QueMesEs(char mes[3]){
 }
 
 void partidaAUsuario(PPartida match, PUsuario usr){
-		// pasa los datos de una nueva partida al usuario (falta que la guarde en uno de los
-		// arreglos de partida de forma temporal)
 		if (match -> tipo == 'G') usr -> gan++;
 		else if (match -> tipo == 'P') usr -> perd++;
 		else usr -> ab++;
-
-		int total = usr -> gan + usr -> perd + usr -> ab;
-
+		int total = (usr -> gan) + (usr -> perd) + (usr -> ab);
 		usr -> ganadas = usr -> gan * 100.0 / total;	
 		usr -> perdidas = usr -> perd * 100.0 / total;
 		usr -> abandonos = usr -> ab * 100.0 / total;
-
 }
 
 
@@ -195,89 +197,63 @@ void guardarDB(PDB database){
 	// en caso de que el archivo ya exista se le sobreescribe la base de datos,
 	// asi se puede llamar a la misma funcion cada vez que se quiera guardar algo
 	ofstream archivo;
-	archivo.open("basededatos.dat",ios::binary);
+	archivo.open("usuarios.bin",ios::binary);
 	if(!archivo.fail()){
 		archivo.write((char*) database, sizeof(*database));
 		archivo.close();
 	}else{
-		cout<<"Error al abrir el archivo."<<endl;
+		cout<<"Error al abrir el archivo. guardarDB"<<endl;
 	}
-
 
 }
 
-Usuario AbrirUsuario (PDB database){
+Usuario AbrirUsuario (PDB database, bool &sale){
 	Usuario user;
 	int QU = database -> cantidad_usuarios, cont = 0, i = 0, longitud;
 	char nombre[11], n[11], pwrd[13], p[13];
 	bool encontrado = false, coincide = false;
-	while(!encontrado){
-		cin.ignore(1000, '\n');
-		cout<<"Ingrese nombre de usuario: ";
-		gets(nombre);
-		while(!encontrado && cont < QU){
-			strcpy(n, (database->usuarios[cont].nombre));
-			if (strcmp(nombre, n)==0) encontrado = true;
-			else cont++;
+	while(cont<3 && (!ecnontrado || !coincide)){
+		while(!encontrado){
+			cin.ignore(1000, '\n');
+			cout<<"Ingrese nombre de usuario: ";
+			gets(nombre);
+			while(!encontrado && cont < QU){
+				strcpy(n, (database->usuarios[cont].nombre));
+				if (strcmp(nombre, n)==0) encontrado = true;
+				else cont++;
+			}
+			cont = 0;
+			if(!encontrado) cout<<"Usuario inexistente."<<endl;
 		}
-		cont = 0;
-		if(!encontrado) cout<<"Usuario inexistente."<<endl;
+		while(!coincide){
+			strcpy(p, (database -> usuarios[cont].contrasena));
+			cin.ignore(1000, '\n');
+			cout<<"Ingrese su contrasena: ";
+			gets(pwrd);
+			if (strcmp(pwrd, p)==0) coincide = true;
+			else cout<<"Contrasena incorrecta, por favor, intente de nuevo."<<endl;
+		}	
+		if (encontrado && coincide) user = database -> usuarios[cont];
+		else cont++;
 	}
-	while(!coincide){
-		strcpy(p, (database -> usuarios[cont].contrasena));
-		cin.ignore(1000, '\n');
-		cout<<"Ingrese su contrasena: ";
-		gets(pwrd);
-		if (strcmp(pwrd, p)==0) coincide = true;
-		else cout<<"Contrasena incorrecta, por favor, intente de nuevo."<<endl;
-	}	
-	if (encontrado && coincide) user = database -> usuarios[cont];
+	if (cont==3) sale = true;
+	else sale = false;
 	
 	return user;
 }
 
-
-
 DB AbrirBaseDeDatos(){
 	DB database;
 	ifstream archivo;
-	archivo.open("basededatos.dat",ios::binary);
+	archivo.open("usuarios.bin",ios::binary);
 	if(!archivo.fail()){
 		archivo.read((char*) &database, sizeof(database));
 		archivo.close();
 	}else{
-		puts("Error al abrir el archivo.");
+		puts("Error al abrir el archivo.(Abrir base de datos)");
 	}
 	return database;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

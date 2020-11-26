@@ -14,7 +14,7 @@ bool acciones(int x, int y, char z, char Pantalla[16][30], bool Bombas[16][30], 
 void descubrir(int x, int y, bool Bombas[16][30], char Pantalla[16][30], int tlX, int tlY);
 void mostrarMatriz(int tlx, int tly, char Pantalla[16][30]);
 void ponerBombas(int tlx, int tly, int QBombas, bool Bombas[16][30]);
-int jugar(int dificultad);
+int jugar(int dificultad, char &caso);
 bool ganaste(int tlX, int tlY, char Pantalla[16][30], bool Bombas[16][30]);
 int menu();
 bool confirmacion();
@@ -48,30 +48,18 @@ int main(){
 		system("pause");
 		system("CLS");
 		do {
-			//Menï¿½ de usuasrios y eso. -1 quiere salir, 0 cuando pusiste 4 veces mal, 1 cuando pone bien.
 			resultado = menuUsuarios();
-			if (resultado == 1) {
-				do {
-					system("CLS");
-					dificultad = menu();
-					if (dificultad < 4 && dificultad>0) {
-						puntos_jugar = jugar(dificultad);
-					}
-				} while (dificultad != 0);
-			}
-			else {
-				if (resultado == -1) {
-					bandera = false;
-				}
+			if (resultado == -1) {
+				bandera = false;
 			}
 		} while (resultado != 0 && bandera);
 	} while (bandera);
 }
 	
 int menuUsuarios(){
-	int opcion, devolver, devaluacion_noche, puntos_jugar, dificultad;
+	int opcion, devolver, devaluacion_noche, puntos_jugar, dificultad, QUsuarios;
 	char caso;
-	bool no_termino = true;
+	bool no_termino = true, sale;
 	DB database;
 	Partida match;
 	Usuario user;
@@ -79,49 +67,93 @@ int menuUsuarios(){
 	if(ExisteBDD(&database)){
 		database = AbrirBaseDeDatos();
 	}
-	
+	QUsuarios = database -> cantidad_usuarios;
 	while(no_termino){
-		cout<<"Ingrese una opcion y pulse enter:"<<endl;
-		cout<<"1: Ingresar"<<endl;
-		cout<<"2: Crear usuario"<<endl;
-		cout<<"3: Ver puntajes"<<endl;
-		cout<<"4: Salir del juego"<<endl;
-		
-		cin>>opcion;
-		if (opcion<1 || opcion>4){
-			cout<<"La opcion ingresada no es valida, ingrese un valor entre 1 y 4:"<<endl;
+		if (QUsuarios < 100 && QUsuarios > 0){
+			cout<<"Ingrese una opcion y pulse enter:"<<endl;
+			cout<<"1: Ingresar"<<endl;
+			cout<<"2: Crear usuario"<<endl;
+			cout<<"3: Ver puntajes"<<endl;
+			cout<<"4: Salir del juego"<<endl;
 			
+			cin>>opcion;
+			if (opcion<1 || opcion>4){
+				cout<<"La opcion ingresada no es valida, ingrese un valor entre 1 y 4:"<<endl;
+				
+			}else{
+				no_termino = false;
+				system("CLS");
+				devaluacion_noche = opcion;
+				
+			}
 		}else{
-			no_termino = false;
-			system("CLS");
-			devaluacion_noche = opcion;
-			
+			if (QUsuarios == 0){
+				cout<<"Ingrese una opcion y pulse enter:"<<endl;
+				cout<<"2: Crear usuario"<<endl;
+				cout<<"3: Ver puntajes"<<endl;
+				cout<<"4: Salir del juego"<<endl;
+				
+				cin>>opcion;
+				if (opcion<2 || opcion>4){
+					cout<<"La opcion ingresada no es valida, ingrese un valor entre 2 y 4:"<<endl;
+					
+				}else{
+					no_termino = false;
+					system("CLS");
+					devaluacion_noche = opcion;
+					
+				}
+			}else{
+				cout<<"Ingrese una opcion y pulse enter:"<<endl;
+				cout<<"1: Ingresar"<<endl;
+				cout<<"3: Ver puntajes"<<endl;
+				cout<<"4: Salir del juego"<<endl;
+				
+				cin>>opcion;
+				if (opcion<1 || opcion>4 || opcion == 2){
+					cout<<"La opcion ingresada no es valida, cantidad máxima de usuarios alcanzaada, ingrese un valor entre 1 y 4:"<<endl;
+					
+				}else{
+					no_termino = false;
+					system("CLS");
+					devaluacion_noche = opcion;
+					
+				}
+			}
 		}
+		
 	}
 	switch(devaluacion_noche){
 		case 1:
-			user = AbrirUsuario(&database);
-			do {
-				system("CLS");
-				dificultad = menu();
-				if (dificultad < 4 && dificultad>0) {
-					puntos_jugar = jugar(dificultad, caso);
-					if(caso == 1){
-						GuardarPartida(&match, dificultad, puntos_jugar, caso);
-						partidaAUsuario(&match, &user);
-					}else{
-						GuardarPartida(&match, dificultad, 0, caso);
-						partidaAUsuario(&match, &user);
+			user = AbrirUsuario(&database, sale);
+			if (!sale){
+				do {
+					system("CLS");
+					dificultad = menu();
+					if (dificultad < 4 && dificultad>0) {
+						puntos_jugar = jugar(dificultad, caso);
+						if(caso == 1){
+							GuardarPartida(&match, dificultad, puntos_jugar, caso);
+							partidaAUsuario(&match, &user);
+						}else{
+							GuardarPartida(&match, dificultad, 0, caso);
+							partidaAUsuario(&match, &user);
+						}
 					}
-				}
-			} while (dificultad != 0);
+				} while (dificultad != 0);
+				devolver = 1;
+			}else{
+				devolver = 0;
+			}
 			break;
 		case 2:
 		//
 			crearUsuario(&database);
+			devolver = 1
 			break;
 		case 3:
 			// 
+			devolver = 1;
 			break;
 		case 4:
 			devolver = -1;
@@ -260,7 +292,7 @@ void ponerBombas(int tlx, int tly, int QBombas, bool  Bombas[16][30]){
 }
 							
 							
-int jugar (int dificultad){
+int jugar (int dificultad, char &caso){
 	char Pantalla[16][30], accion, coordX, coordY;
 	bool Bombas[16][30];
 	int tlX, tlY, CuantasBombas, tiempoinicial = time(NULL), tiempofinal = -1;
@@ -306,11 +338,14 @@ int jugar (int dificultad){
 			if (Gano) {
 				tiempofinal = time(NULL) - tiempoinicial;
 				mensajeGanaste(tiempofinal);
+				caso = 'G';
 			}
 			if (!NoPerdio) {
 				mensajePerdiste(tlX, tlY, Bombas);
+				caso = 'P';
 			}
 		}else {
+			caso = 'A';
 			cin.ignore(100000, '\n');
 		}
 	}
@@ -372,7 +407,7 @@ bool confirmacion(){
 	char rta = 0;
 	bool devolver = false, conf = true;
 	system("CLS");
-	cout<<"ï¿½Esta seguro que desea cerrar su sesion?"<<endl;
+	cout<<"¿Esta seguro que desea cerrar su sesion?"<<endl;
 	cout<<"Ingrese 's' para salir o 'n' para permanecer en el juego:"<<endl;
 	while (conf){
 		cin>>rta;
