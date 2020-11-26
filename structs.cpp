@@ -41,6 +41,8 @@ void crearBaseDeDatos(PDB database){
 		cout<<"Error. crearBaseDeDatos"<<endl;
 	}
 }
+
+// inicializa a un usuario con el nombre y contrasenia que el usuario ingrese
 void crearUsuario(PDB database){
 	int cont = 0, QUsuarios = database -> cantidad_usuarios;
 	Usuario user = database -> usuarios[database -> cantidad_usuarios];
@@ -97,6 +99,9 @@ void crearUsuario(PDB database){
 		Puser -> perdidas = 0;
 		Puser -> ganadas = 0;
 		Puser -> abandonos = 0;
+		Puser -> tlfacil = 0;
+		Puser -> tlmedio = 0;
+		Puser -> tldificil = 0;
 		database -> cantidad_usuarios++;
 		}
 }
@@ -180,6 +185,7 @@ int QueMesEs(char mes[3]){
 	return  rdo;
 }
 
+// toma una partida y le guarda los datos al usuario ingresado
 void partidaAUsuario(PPartida match, PUsuario usr){
 		if (match -> tipo == 'G') usr -> gan++;
 		else if (match -> tipo == 'P') usr -> perd++;
@@ -188,25 +194,69 @@ void partidaAUsuario(PPartida match, PUsuario usr){
 		usr -> ganadas = usr -> gan * 100.0 / total;	
 		usr -> perdidas = usr -> perd * 100.0 / total;
 		usr -> abandonos = usr -> ab * 100.0 / total;
+		
+
+		// guardado de partida
+		int menor_punt = 10000000, pos=-1;
+		if (match -> dificultad ==1){
+			if (usr->tlfacil==10) {
+				for (int i=0;i<10;i++){
+					if (usr->partidasfacil[i].puntaje < menor_punt){
+						menor_punt = usr->partidasfacil[i].puntaje;
+						pos = i;
+					}
+				}
+				if (match->puntaje>menor_punt) usr->partidasfacil[pos] = *match;
+			}else{
+				usr->partidasfacil[usr->tlfacil] = *match;
+				usr->tlfacil++;
+			}
+		}
+		else if (match -> dificultad ==2){
+			if (usr->tlmedio ==10){
+				for (int j=0;j<10;j++){
+					if (usr->partidasmedio[j].puntaje < menor_punt){
+						menor_punt = usr->partidasmedio[j].puntaje;
+						pos = j;
+					}
+				}
+				if (match->puntaje>menor_punt) usr->partidasmedio[pos] = *match;
+			}else{
+				usr->partidasmedio[usr->tlmedio] = *match;
+				usr->tlmedio++;
+			}
+		}
+		else{
+			if (usr->tldificil==10){
+				for (int k=0;k<10;k++){
+					if (usr->partidasdificil[k].puntaje < menor_punt){
+						menor_punt = usr->partidasdificil[k].puntaje;
+						pos = k;
+					}
+				}
+				if (match->puntaje>menor_punt) usr->partidasdificil[pos] = *match;
+			}else{
+				usr->partidasdificil[usr->tldificil] = *match;
+				usr->tldificil++;
+			}
+		}
 }
 
 
-
+// guarda la base de datos ingresada en el archivo
 void guardarDB(PDB database){
-	// tiene que crear si no lo hay un archivo binario y guardarle la base de datos
-	// en caso de que el archivo ya exista se le sobreescribe la base de datos,
-	// asi se puede llamar a la misma funcion cada vez que se quiera guardar algo
 	ofstream archivo;
 	archivo.open("usuarios.bin",ios::binary);
 	if(!archivo.fail()){
 		archivo.write((char*) database, sizeof(*database));
 		archivo.close();
+		cout<<"Progreso guardado"<<endl;
 	}else{
 		cout<<"Error al abrir el archivo. guardarDB"<<endl;
 	}
 
 }
-
+// busca un usuario por su nombre y contrasenia
 Usuario AbrirUsuario (PDB database, bool &sale){
 	Usuario user;
 	int QU = database -> cantidad_usuarios, cont = 0, i = 0, longitud;
@@ -242,15 +292,12 @@ Usuario AbrirUsuario (PDB database, bool &sale){
 	return user;
 }
 
-<<<<<<< HEAD
 
 
 
 
 
 //se ejecuta al comienzo del programa
-=======
->>>>>>> ff68a62131f4f1e2c628b91a666437990ba4a841
 DB AbrirBaseDeDatos(){
 	DB database;
 	PDB aux;
@@ -274,8 +321,13 @@ DB AbrirBaseDeDatos(){
 }
 
 
-
-<<<<<<< HEAD
+//calcula puntos con el tiempo
+int calculoPTO(int tiempo){
+	int ret;
+	if (tiempo<=0) ret = 1000000;
+	else ret=60000/tiempo;
+	
+}
 
 
 
