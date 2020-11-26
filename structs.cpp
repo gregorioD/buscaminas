@@ -237,21 +237,28 @@ Usuario AbrirUsuario (PDB database){
 }
 
 
-
+//se ejecuta al comienzo del programa
 DB AbrirBaseDeDatos(){
 	DB database;
+	PDB aux;
 	ifstream archivo;
 	archivo.open("basededatos.dat",ios::binary);
 	if(!archivo.fail()){
+		// cambie esta parte para que si no logra leer la base de datos devuelva una nueva
+
 		archivo.read((char*) &database, sizeof(database));
+		if (archivo.eof()){
+			crearBaseDeDatos(aux);
+			database = *aux;
+		}
+		
 		archivo.close();
+		
 	}else{
 		puts("Error al abrir el archivo.");
 	}
 	return database;
 }
-
-
 
 
 
