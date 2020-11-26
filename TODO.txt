@@ -34,3 +34,39 @@ las partidas q guardan los usuarios)? para pensar jente...
 
 - hay que cambiar lo del read y revisar si esta bien puesta la funcion gets, ya que no aparece
 como definida y por eso no compila // Listo :)
+
+
+el programa cuando arranca tiene que intentar leer la base de datos del archivo
+si el archivo no existe lo crea y le escribe una base de datos vacia, si el archivo existe
+intenta leer la base de datos, si esta existe la carga en memoria, si no crea una vacia
+
+luego muestra el menu de usuarios y si hay al menos un usuario guardado incluye la opcion
+de ingresar y ver los puntajes guardados, sino solo se puede crear un usuario. Ademas siempre esta
+la opcion de salir del programa. Si la base de datos esta llena, tampoco se debe mostrar la opcion
+de crear usuario pero si los puntajes.
+
+en cuanto a la creacion de usuario, este se inicializa con sus arreglos de partidas vacios y 
+porcentajes y puntajes en cero 
+
+luego de crear el usuario el juego se ejecuta como en la version anterior pero tiene que calcular
+un puntaje y mostrarlo para cada partida ganada, ademas cada partida se debe guardar, en caso de 
+superar algun puntaje guardado, en el arreglo de partidas correspondiente de cada usuario:
+facil, medio o dificil segun la dificultad de la partida
+
+luego de cada partida finalizada, se deben actualizar los porcentajes del usuario, si es necesario
+guardar la partida, y, cargar todos los datos que se encuentran en un struct usuario en memoria
+al archivo, no es necesario antes cargarlos a la base de datos ya que esto se hace automaticamente
+al crear el usuario en la direccion de memoria de algun lugar del arreglo usuarios, ubicado en el 
+struct base de datos
+
+hay que tener en cuenta que se deben guardar las partidas abandonadas tambien, es decir, hay que
+realizar una escritura al archivo cuando se gana, se pierde, o se abandona la partida.
+
+en cuanto al guardado de contrasenias vamos a necesitar crear una funcion que encripte y otra
+que desencripte las contrasenias para el guardado en archivo y la lectura
+
+en caso de querer realizar el desafio 3, lo podemos hacer con una funcion que guarde en un struct
+de tablero en cada usuario el estado actual de la partida al momento de abandonar, y otra funcion
+que le pregunte al usuario si desea continuar la partida en vez de iniciar una nueva en el menu
+siguiente al ingreso, en caso de que desee iniciar una nueva de cualquier tipo el tablero guardado
+se reiniciaria

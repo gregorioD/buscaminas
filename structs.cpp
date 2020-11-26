@@ -9,12 +9,24 @@
 using namespace std;
 
 
-bool ExisteBDD(){
+bool ExisteBDD(PDB database){
 	bool resultado = false;
 	ifstream archivo;
-	archivo.open("basededatos.dat", ios::binary);
+	archivo.open("usuarios.bin", ios::binary);
 	if (!archivo.fail()){
 		if(!archivo.eof()) resultado = true;
+		else{
+			crearBaseDeDatos(database);
+		}
+		archivo.close();
+	}else{
+		archivo.close();
+		ofstream archivo2;
+		archivo2.open("usuarios.bin", ios::binary);
+		if(archivo2.fail()){
+			cout<<"";
+		}
+		archivo2.close();
 	}
 	return resultado;
 }
@@ -76,9 +88,6 @@ void crearUsuario(PDB database){
 		user -> perdidas = 0;
 		user -> ganadas = 0;
 		user -> abandonos = 0;
-		crearCola(user -> colafacil);
-		crearCola(user -> colamed);
-		crearCola(user -> coladif);
 		database -> cantidad_usuarios++;
 		}else{
 			cout<<"Error. Ya se alcanzo la cantidad maxima de usuarios."<<endl;
@@ -177,20 +186,6 @@ void partidaAUsuario(PPartida match, PUsuario usr){
 		usr -> perdidas = usr -> perd * 100.0 / total;
 		usr -> abandonos = usr -> ab * 100.0 / total;
 
-		// guarda en las colas de ultimas partidas del usuario
-		switch (match -> dificultad){
-		
-		case 1:
-			sumarCola(usr -> colafacil, match);
-			break;
-		
-		case 2:
-			sumarCola(usr -> colamed, match);
-			break;
-		case 3: 
-			sumarCola(usr -> coladif, match);
-			break;
-		}
 }
 
 
@@ -217,28 +212,24 @@ Usuario AbrirUsuario (PDB database){
 	char nombre[11], n[11], pwrd[13], p[13];
 	bool encontrado = false, coincide = false;
 	while(!encontrado){
+		cin.ignore(1000, '\n');
 		cout<<"Ingrese nombre de usuario: ";
-		//gets(nombre);
+		gets(nombre);
 		while(!encontrado && cont < QU){
-			longitud = strlen(database->usuarios[cont].nombre);
-			while (i < longitud){
-				n[i++]= database -> usuarios[cont].nombre[i];
-			}
-			n[i] = '\0';
-			i = 0;
+			strcpy(n, (database->usuarios[cont].nombre));
 			if (strcmp(nombre, n)==0) encontrado = true;
 			else cont++;
 		}
+		cont = 0;
+		if(!encontrado) cout<<"Usuario inexistente."<<endl;
 	}
 	while(!coincide){
-		longitud = strlen(database -> usuarios[cont].contrasena);
-		while (i < longitud){
-			p[i++] = database -> usuarios[cont].contrasena[i];
-		}
-		cout<<"Ingrese su contraseña: ";
-		//gets(pwrd);
+		strcpy(p, (database -> usuarios[cont].contrasena));
+		cin.ignore(1000, '\n');
+		cout<<"Ingrese su contrasena: ";
+		gets(pwrd);
 		if (strcmp(pwrd, p)==0) coincide = true;
-		else cout<<"Contraseña incorrecta, por favor, intente de nuevo."<<endl;
+		else cout<<"Contrasena incorrecta, por favor, intente de nuevo."<<endl;
 	}	
 	if (encontrado && coincide) user = database -> usuarios[cont];
 	
@@ -260,41 +251,6 @@ DB AbrirBaseDeDatos(){
 	return database;
 }
 
-void crearCola(PCola col){
-	col -> comienzo = 0;
-	col -> tl = 0;
-}
-
-void sumarCola(PCola col, PPartida partida){
-	col -> partidas[(col -> tl + col -> comienzo)%10] = partida;
-	if (col -> tl==10) col -> comienzo++;
-	else col -> tl++;
-}
-
-void reiniciarCola(PCola col){
-	crearCola(col);
-	for (int i =0; i<10; i++) col -> partidas[i] = NULL;
-}
-
-PPartida cargarPartCola(PUsuario usr, int dificultad, int indice){
-	// devuelve un puntero partida de la cola determinada por dificultad en la posicion indice
-	// dif 1,2 o 3 e indice 0-9
-	PPartida part;
-	if (dificultad==1){
-		part = usr -> colafacil->partidas[(usr -> colafacil->comienzo + indice)%10];
-	}else if (dificultad==2){
-		part = usr -> colamed->partidas[(usr -> colamed->comienzo + indice)%10];
-	}else part = usr -> coladif->partidas[(usr -> coladif->comienzo + indice)%10];
-
-	return part;
-}
-
-void borrarHistorial(PUsuario usr){
-	// borra todas las partidas guardadas del usuario, pero mantiene los porcentajes
-	reiniciarCola(usr -> colafacil);
-	reiniciarCola(usr -> colamed);
-	reiniciarCola(usr -> coladif);
-}
 
 
 
