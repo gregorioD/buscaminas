@@ -48,7 +48,7 @@ int main(){
 		system("pause");
 		system("CLS");
 		do {
-			//Menú de usuasrios y eso. -1 quiere salir, 0 cuando pusiste 4 veces mal, 1 cuando pone bien.
+			//Menï¿½ de usuasrios y eso. -1 quiere salir, 0 cuando pusiste 4 veces mal, 1 cuando pone bien.
 			resultado = menuUsuarios();
 			if (resultado == 1) {
 				do {
@@ -69,8 +69,16 @@ int main(){
 }
 	
 int menuUsuarios(){
-	int opcion, devolver, devaluacion_noche;
+	int opcion, devolver, devaluacion_noche, puntos_jugar, dificultad;
+	char caso;
 	bool no_termino = true;
+	DB database;
+	Partida match;
+	Usuario user;
+	
+	if(ExisteBDD(&database)){
+		database = AbrirBaseDeDatos();
+	}
 	
 	while(no_termino){
 		cout<<"Ingrese una opcion y pulse enter:"<<endl;
@@ -87,18 +95,41 @@ int menuUsuarios(){
 			no_termino = false;
 			system("CLS");
 			devaluacion_noche = opcion;
+			
 		}
 	}
 	switch(devaluacion_noche){
-		
-	case 1:
-	case 2:
-		
-	case 3:
-	case 4:
-		
-		break;
+		case 1:
+			user = AbrirUsuario(&database);
+			do {
+				system("CLS");
+				dificultad = menu();
+				if (dificultad < 4 && dificultad>0) {
+					puntos_jugar = jugar(dificultad, caso);
+					if(caso == 1){
+						GuardarPartida(&match, dificultad, puntos_jugar, caso);
+						partidaAUsuario(&match, &user);
+					}else{
+						GuardarPartida(&match, dificultad, 0, caso);
+						partidaAUsuario(&match, &user);
+					}
+				}
+			} while (dificultad != 0);
+			break;
+		case 2:
+		//
+			crearUsuario(&database);
+			break;
+		case 3:
+			// 
+			break;
+		case 4:
+			devolver = -1;
+			break;
 	}
+	
+	guardarDB(&database);
+	return devolver;
 }
 		
 int bAdyacentes(int x, int y, int tlx, int tly, bool Bombas[16][30]){
@@ -341,7 +372,7 @@ bool confirmacion(){
 	char rta = 0;
 	bool devolver = false, conf = true;
 	system("CLS");
-	cout<<"¿Esta seguro que desea cerrar su sesion?"<<endl;
+	cout<<"ï¿½Esta seguro que desea cerrar su sesion?"<<endl;
 	cout<<"Ingrese 's' para salir o 'n' para permanecer en el juego:"<<endl;
 	while (conf){
 		cin>>rta;

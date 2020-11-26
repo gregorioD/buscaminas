@@ -16,9 +16,9 @@ struct Partida{
 typedef struct Partida* PPartida;
 
 struct Usuario{
+	int gan, perd, ab;
 	char nombre[11], contrasena[13];
 	double perdidas, ganadas, abandonos;
-	PPartida partidasfacil, partidasmedio, partidasdificil;
 	// un array dinamico puede venir bien para almacenar los objetos de tipo Partida, 
 	//es decir con la 
 	// informacion de las partidas de cada dificultad para cada usuario. 
@@ -29,9 +29,11 @@ struct Usuario{
 typedef struct Usuario* PUsuario;
 
 struct DB{
-	PUsuario usuarios;
+	Usuario usuarios[100];
 	int cantidad_usuarios=0;
 };
+
+
 
 typedef struct DB* PDB;
 
@@ -45,4 +47,13 @@ int QueMesEs(char mes[3]);
 void nuevaPartida(Usuario usr);
 Usuario nuevoUsuario(char * nomb, char * contra);
 bool correcto(char nombre[11], char contra[13]);
+Usuario AbrirUsuario (PDB database);
+DB AbrirBaseDeDatos();
+
+
+
+
+
+
+
 
