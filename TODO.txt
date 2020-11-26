@@ -14,6 +14,7 @@ Implementaciones de funciones ya creadas:
 - ya hice lo de guardar base de datos
 
 
+zaramay beibe te falta calle guachin
 
 
 
@@ -39,11 +40,6 @@ como definida y por eso no compila // Listo :)
 el programa cuando arranca tiene que intentar leer la base de datos del archivo
 si el archivo no existe lo crea y le escribe una base de datos vacia, si el archivo existe
 intenta leer la base de datos, si esta existe la carga en memoria, si no crea una vacia
-
-luego muestra el menu de usuarios y si hay al menos un usuario guardado incluye la opcion
-de ingresar y ver los puntajes guardados, sino solo se puede crear un usuario. Ademas siempre esta
-la opcion de salir del programa. Si la base de datos esta llena, tampoco se debe mostrar la opcion
-de crear usuario pero si los puntajes.
 
 en cuanto a la creacion de usuario, este se inicializa con sus arreglos de partidas vacios y 
 porcentajes y puntajes en cero 
