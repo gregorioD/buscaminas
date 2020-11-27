@@ -5,6 +5,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <cstdio>
+#include <conio.h>
 
 using namespace std;
 // Para guardar datos de partidas:
@@ -294,6 +295,7 @@ DB AbrirBaseDeDatos(){
 		arch.open("usuarios.bin", ios::binary);
 		arch.write((char*) aux, sizeof(*aux));
 		database = *aux;
+		arch.close();
 		//puts("Error al abrir el archivo.(Abrir base de datos)");
 	}
 	return database;
@@ -307,18 +309,9 @@ int calculoPTO(int tiempo){
 	
 }
 
-
-struct puntaje{
-	int mayorXusuario, mayorXnivel, posXusuario, posXnivel, p_usuario;
-};
-
-void pa0(puntaje pto){
-	pto.mayorXusuario = 0;
-	pto.mayorXnivel = 0;
-}
-
 // mejor por nivel, porcentajes de usrs(n) mejor puntaje por nivel por usuario(y fecha del ptje)
 void mostrarPTO(PDB database, int opcion){
+	system(cls);
 	switch(opcion){
 		case 1:
 		cout<<"| Nivel |   Usuario   | Puntaje "<<endl;
@@ -387,7 +380,49 @@ void mostrarPTO(PDB database, int opcion){
 			cout<<"| 2     | "<<"========== | ==="<<endl;
 			cout<<"| 3     | "<<"========== | ==="<<endl;
 		}
-	}
+		break;
+
+		case 2:
+		// mover despues de 32 lineas
+		int num, x = 0, m=0, x2=0;
+		bool flag1=true, flag2=true;
+		char movimiento, rta; // j=abajo k=arriba
+
+		cout<<"Ingrese la cantidad de usuarios a mostrar (un numero entre 1 y "<<database->cantidad_usuarios<<"): "<<endl;
+		cin>>num;
+		while (num<1 || num>database->cantidad_usuarios){
+			system(cls);
+			cout<<"El numero ingresado no es valido: Ingrese un valor entre 1 y "<<database->cantidad_usuarios<<":"<<endl;
+			cin>>num;
+
+		}
+		cout<<"   Usuario   | % Ganadas | % Perdidas | % Abandonos"<<endl;
+		while (flag1){
+			x = x2;
+			while (flag2 && m<32){
+				system(cls);
+				cout<<" "<<database->usuarios[x].nombre<<" | "<<database->usuarios[x].ganadas<<"        | ";
+				cout<<database->usuarios[x].perdidas<<"         | "<<database->usuarios[x].abandonos<<endl;
+				x++;
+				m++;
+				if (x==num) flag2=false;
+				cout<<"\n\nUtilice 'j' y 'k' para desplazarse o ingrese 'q' para volver al menu";
+			}
+			m=0;
+			movimiento = getch();
+			if (movimiento == 'j' && x2<num-1){
+				x2++;
+			}else if (movimiento == 'k' && x2>0){
+				x2--;
+			}else if (movimiento == 'q'){
+				cout<<"Desea salir al menu: s / n"<<endl;
+				cin>>rta;
+				if(rta=='s') flag1 = false;
+
+			}
+		}
+
+		}
 }
 
 
