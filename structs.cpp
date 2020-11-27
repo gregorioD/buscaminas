@@ -308,6 +308,88 @@ int calculoPTO(int tiempo){
 }
 
 
+struct puntaje{
+	int mayorXusuario, mayorXnivel, posXusuario, posXnivel, p_usuario;
+};
+
+void pa0(puntaje pto){
+	pto.mayorXusuario = 0;
+	pto.mayorXnivel = 0;
+}
+
+// mejor por nivel, porcentajes de usrs(n) mejor puntaje por nivel por usuario(y fecha del ptje)
+void mostrarPTO(PDB database, int opcion){
+	switch(opcion){
+		case 1:
+		cout<<"| Nivel |   Usuario   | Puntaje "<<endl;
+
+		int mayorXusuario=0, mayorXnivel=0, p_usuario=-1;
+
+		if(database->cantidad_usuarios != 0){
+			for (int i =0; i<database->cantidad_usuarios; i++){
+				if(database->usuarios[i].tlfacil !=0){ // solo si tiene alguna partida jugada
+					for (int j=0;j<database->usuarios[i].tlfacil;j++){
+						if(database->usuarios[i].partidasfacil[j].puntaje > mayorXusuario){
+							mayorXusuario = database->usuarios[i].partidasfacil[j].puntaje;
+						}
+					}
+					if(mayorXusuario>mayorXnivel){
+						mayorXnivel = mayorXusuario;
+						p_usuario = i;
+					}
+				}
+			}
+			if (p_usuario != -1) cout<<"| 1     | "<<database->usuarios[p_usuario].nombre<<" | "<<mayorXnivel<<endl;
+			else cout<<"| 1     | "<<"========== | ==="<<endl;
+			mayorXusuario=0;
+			mayorXnivel=0;
+			p_usuario=-1;
+
+			for (int i =0; i<database->cantidad_usuarios; i++){
+				if(database->usuarios[i].tlmedio !=0){ // solo si tiene alguna partida jugada
+					for (int j=0;j<database->usuarios[i].tlmedio;j++){
+						if(database->usuarios[i].partidasmedio[j].puntaje > mayorXusuario){
+							mayorXusuario = database->usuarios[i].partidasmedio[j].puntaje;
+						}
+					}
+					if(mayorXusuario>mayorXnivel){
+						mayorXnivel = mayorXusuario;
+						p_usuario = i;
+					}
+				}
+			}
+			if (p_usuario != -1) cout<<"| 2     | "<<database->usuarios[p_usuario].nombre<<" | "<<mayorXnivel<<endl;
+			else cout<<"| 2     | "<<"========== | ==="<<endl;
+			mayorXusuario=0;
+			mayorXnivel=0;
+			p_usuario=-1;
+
+			for (int i =0; i<database->cantidad_usuarios; i++){
+				if(database->usuarios[i].tldificil !=0){ // solo si tiene alguna partida jugada
+					for (int j=0;j<database->usuarios[i].tldificil;j++){
+						if(database->usuarios[i].partidasdificil[j].puntaje > mayorXusuario){
+							mayorXusuario = database->usuarios[i].partidasdificil[j].puntaje;
+						}
+					}
+					if(mayorXusuario>mayorXnivel){
+						mayorXnivel = mayorXusuario;
+						p_usuario = i;
+					}
+				}
+			}
+			if (p_usuario != -1) cout<<"| 3     | "<<database->usuarios[p_usuario].nombre<<" | "<<mayorXnivel<<endl;
+			else cout<<"| 3     | "<<"========== | ==="<<endl;
+			mayorXusuario=0;
+			mayorXnivel=0;
+			p_usuario=-1;
+		}else{
+			cout<<"| 1     | "<<"========== | ==="<<endl;
+			cout<<"| 2     | "<<"========== | ==="<<endl;
+			cout<<"| 3     | "<<"========== | ==="<<endl;
+		}
+	}
+}
+
 
 
 
