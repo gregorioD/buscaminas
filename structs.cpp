@@ -490,6 +490,7 @@ void mostrarPTO(PDB database, int opcion){
 
 				}
 				system(cls);
+			}
 
 
 
@@ -528,8 +529,36 @@ int mejorPartida(PUsuario usr, int dif){
 	return ret;
 }
 
-
-
+// encriptar = true: encripta, sino desencripta
+void encriptar(PUsuario user, bool encriptar){
+	char* referencia; // 58 caracteres posibles para la contrasenia
+	int pos, j=0;
+	bool encontro=false;
+	referencia = {a, b, c, d, e, f, g, h, i, j, k, l, m, n, ñ, o, p, q, r, s, t, u, v, w, x, y, z, $, #, %, &, A, B, C, D, E, F, G, H, I, J, K, L, M, N, Ñ, O, P, Q, R, S, T, U, V, W, X, Y, Z}
+	if(encriptar){
+		for (int i=0;i<13;i++){
+			while (j<58 && !encontro){
+				if (user->contrasena[i]==referencia[j]){
+					pos = j;
+					encontro = true;
+				}
+			}
+			encontro=false;
+			user->contrasena[i] = referencia[(pos+7)%58];
+		}
+	}else{
+		for (int i=0;i<13;i++){
+			while (j<58 && !encontro){
+				if (user->contrasena[i]==referencia[j]){
+					pos = j;
+					encontro = true;
+				}
+			}
+			encontro=false;
+			user->contrasena[i] = referencia[(pos-7)%58];
+		}
+	}
+}
 
 
 
