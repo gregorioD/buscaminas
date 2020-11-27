@@ -47,9 +47,4 @@ void guardarDB(PDB database);
 Usuario AbrirUsuario (PDB database, bool &sale);
 DB AbrirBaseDeDatos();
 void mostrarPTO(PDB database, int opcion);
-
-/*
-void nuevaPartida(Usuario usr);
-Usuario nuevoUsuario(char * nomb, char * contra);
-bool correcto(char nombre[11], char contra[13]);
-*/
+int mejorPartida(PUsuario usr, int dif);

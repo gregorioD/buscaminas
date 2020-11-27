@@ -330,17 +330,19 @@ int calculoPTO(int tiempo){
 
 // mejor por nivel, porcentajes de usrs(n) mejor puntaje por nivel por usuario(y fecha del ptje)
 void mostrarPTO(PDB database, int opcion){
-	system(cls);
-	int num, x = 0, m=0, x2=0;
+	system("CLS");
+	int num, x = 0, m=0, x2=0, mayorXusuario, mayorXnivel, p_usuario;
 	bool flag1=true, flag2=true;
 	char movimiento, rta;
 
-	if (database->cantidad_usuarios!==0){
+	if (database->cantidad_usuarios!=0){
 		switch(opcion){
 			case 1:
 			cout<<"| Nivel |   Usuario   | Puntaje "<<endl;
 
-			int mayorXusuario=0, mayorXnivel=0, p_usuario=-1;
+			mayorXusuario=0;
+			mayorXnivel=0;
+			p_usuario=-1;
 
 			if(database->cantidad_usuarios != 0){
 				for (int i =0; i<database->cantidad_usuarios; i++){
@@ -410,10 +412,9 @@ void mostrarPTO(PDB database, int opcion){
 			cout<<"Ingrese la cantidad de usuarios a mostrar (un numero entre 1 y "<<database->cantidad_usuarios<<"): "<<endl;
 			cin>>num;
 			while (num<1 || num>database->cantidad_usuarios){
-				system(cls);
+				system("CLS");
 				cout<<"El numero ingresado no es valido: Ingrese un valor entre 1 y "<<database->cantidad_usuarios<<":"<<endl;
 				cin>>num;
-
 			}
 			
 			while (flag1){
@@ -437,9 +438,8 @@ void mostrarPTO(PDB database, int opcion){
 					cout<<"Desea salir al menu: s / n"<<endl;
 					cin>>rta;
 					if(rta=='s') flag1 = false;
-
 				}
-				system(cls);
+				system("CLS");
 			}
 			break;
 
@@ -487,13 +487,9 @@ void mostrarPTO(PDB database, int opcion){
 					cout<<"Desea salir al menu: s / n"<<endl;
 					cin>>rta;
 					if(rta=='s') flag1 = false;
-
 				}
 				system(cls);
 			}
-
-
-
 		}
 	}else cout<<"No hay ningun dato guardado :("<<endl;
 }
