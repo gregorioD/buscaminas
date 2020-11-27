@@ -252,7 +252,6 @@ Usuario AbrirUsuario (PDB database, bool &sale){
 			cin >> ws;
 			gets(nombre);
 			while(!encontrado && cont < QU){
-				cout<<cont<<": "<<database->usuarios[cont].nombre<<endl;
 				strcpy(n, (database->usuarios[cont].nombre));
 				if ((strcmp(nombre, n))==0) encontrado = true;
 				else cont++;

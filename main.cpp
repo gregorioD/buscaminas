@@ -56,6 +56,12 @@ int main(){
 			}
 		} while (resultado != 0 && bandera);
 	} while (bandera);
+	system("CLS");
+	cout<<"    ___    ____  ________  _____"<<endl;
+	cout<<"   /   |  / __ \\/  _/ __ \\/ ___/"<<endl;
+	cout<<"  / /| | / / / // // / / /\\__ \\ "<<endl;
+	cout<<" / ___ |/ /_/ // // /_/ /___/ / "<<endl;
+	cout<<"/_/  |_/_____/___/\\____//____/  "<<endl;
 }
 	
 int menuUsuarios(){
@@ -70,6 +76,7 @@ int menuUsuarios(){
 	
 	while(no_termino){
 		if (QUsuarios < 100 && QUsuarios > 0){
+			system("CLS");
 			cout<<"Ingrese una opcion y pulse enter:"<<endl;
 			cout<<"1: Ingresar"<<endl;
 			cout<<"2: Crear usuario"<<endl;
@@ -413,17 +420,19 @@ bool confirmacion(){
 		cin>>rta;
 		if (rta !='s' && rta !='n'){
 			system("CLS");
-			cout<<"La opcion no es valida, ingrese 's' para salir o 'n' para permanecer en el juego."<<endl;
+			cout<<"La opcion no es valida, ingrese 's' para salir o 'n' para permanecer en la sesion."<<endl;
 			
 		}else if(rta == 's'){
 			devolver = true;
 			conf = false;
+			/*
 			system("CLS");
 			cout<<"    ___    ____  ________  _____"<<endl;
 			cout<<"   /   |  / __ \\/  _/ __ \\/ ___/"<<endl;
 			cout<<"  / /| | / / / // // / / /\\__ \\ "<<endl;
 			cout<<" / ___ |/ /_/ // // /_/ /___/ / "<<endl;
 			cout<<"/_/  |_/_____/___/\\____//____/  "<<endl;
+			*/
 		}else{
 			system("CLS");
 			devolver = false;
