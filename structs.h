@@ -46,7 +46,7 @@ void partidaAUsuario(PPartida match, PUsuario usr);
 void guardarDB(PDB database);
 Usuario AbrirUsuario (PDB database, bool &sale);
 DB AbrirBaseDeDatos();
-
+void mostrarPTO(PDB database, int opcion);
 
 /*
 void nuevaPartida(Usuario usr);

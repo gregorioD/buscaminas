@@ -7,6 +7,7 @@
 #include <time.h>
 #include "structs.cpp"
 
+
 using namespace std;
 
 int bAdyacentes(int x, int y, int tlx, int tly, bool Bombas[16][30]);
@@ -65,7 +66,7 @@ int main(){
 }
 	
 int menuUsuarios(){
-	int opcion, devolver, dev, puntos_jugar, dificultad, QUsuarios;
+	int opcion, devolver, dev, puntos_jugar, dificultad, QUsuarios, op_pto;
 	char caso;
 	bool no_termino = true, sale;
 	DB database;
@@ -74,6 +75,14 @@ int menuUsuarios(){
 	database = AbrirBaseDeDatos();
 	QUsuarios = database.cantidad_usuarios;
 	
+
+  
+  
+  
+	database = AbrirBaseDeDatos();
+	
+	QUsuarios = database.cantidad_usuarios;
+
 	while(no_termino){
 		if (QUsuarios < 100 && QUsuarios > 0){
 			system("CLS");
@@ -159,7 +168,13 @@ int menuUsuarios(){
 			devolver = 1;
 			break;
 		case 3:
-			// 
+			cout<<"Que puntajes desea ver:"<<endl;
+			cout<<"1: Mejor por dificultad"<<endl;
+			cout<<"2: Ranking de usuarios"<<endl;
+			cout<<"3: Mejores partidas por usuario"<<endl;
+			// falta validacion
+			cin>>op_pto;
+			mostrarPTO(&database, op_pto);
 			devolver = 1;
 			break;
 		case 4:
