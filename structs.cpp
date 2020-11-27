@@ -488,7 +488,7 @@ void mostrarPTO(PDB database, int opcion){
 					cin>>rta;
 					if(rta=='s') flag1 = false;
 				}
-				system(cls);
+				system("CLS");
 			}
 		}
 	}else cout<<"No hay ningun dato guardado :("<<endl;
