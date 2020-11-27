@@ -5,7 +5,12 @@
 #include <ctime>
 #include <cstdlib>
 #include <cstdio>
+#include <iomanip>
 #include <conio.h>
+
+
+
+
 
 using namespace std;
 // Para guardar datos de partidas:
@@ -20,15 +25,16 @@ void crearBaseDeDatos(PDB database){
 // inicializa a un usuario con el nombre y contrasenia que el usuario ingrese
 void crearUsuario(PDB database){
 	int cont = 0, QUsuarios = database -> cantidad_usuarios;
-	Usuario user = database -> usuarios[database -> cantidad_usuarios];
+	Usuario user;
 	PUsuario Puser = &user;
 	char nombre[11], n[11], contrasena[13];
 	bool correcto = false, tamanoCorrecto = false, esAlNum = true, esUnic = true;
 	if (QUsuarios < 100){
-		cin.ignore(1000, '\n');
 		cout<<"Ingrese su nombre: ";
-		gets(nombre);
+		
 		while(!correcto){
+			cin >> ws;
+			gets(nombre);
 			if(strlen(nombre)>7 && strlen(nombre) <11){
 				tamanoCorrecto = true;
 			}
@@ -47,16 +53,22 @@ void crearUsuario(PDB database){
 			}
 			if (tamanoCorrecto && esAlNum && esUnic){
 				correcto = true;
+			}else{
+				cout<<"Nombre invalido. Por favor, intente otra vez."<<endl;
 			}
 		}
-		cout <<"Su nombre es: "<<nombre;
+		
+    
+    
+    cout <<"Su nombre es: "<<nombre<<endl;
+		strcpy(user.nombre, nombre);
 		correcto = false;
 		tamanoCorrecto = false;
 		esAlNum = true;
-		cin.ignore(1000, '\n');
 		cout<<"Ingrese su contrasena: ";
-		gets(contrasena);
 		while (!correcto){
+			cin >> ws;
+			gets(contrasena);
 			if (strlen(contrasena) > 0 && strlen(contrasena)<13){
 				tamanoCorrecto = true;
 			}
@@ -67,16 +79,18 @@ void crearUsuario(PDB database){
 			if (esAlNum && tamanoCorrecto){
 				correcto = true;
 				cout<<"Su contrasena es: "<<contrasena<<endl;
+				strcpy(user.contrasena, contrasena);
+			}else{
+				cout<<"Contraasena invalida, por favor, trate otra vez."<<endl;
 			}
 		}
-		strcpy((Puser -> nombre), nombre);
-		strcpy((Puser -> contrasena), contrasena);
-		Puser -> perdidas = 0;
-		Puser -> ganadas = 0;
-		Puser -> abandonos = 0;
-		Puser -> tlfacil = 0;
-		Puser -> tlmedio = 0;
-		Puser -> tldificil = 0;
+		user.perdidas = 0;
+		user.ganadas = 0;
+		user.abandonos = 0;
+		user.tlfacil = 0;
+		user.tlmedio = 0;
+		user.tldificil = 0;
+		database -> usuarios[QUsuarios] = user;
 		database -> cantidad_usuarios++;
 		}
 }
@@ -239,31 +253,36 @@ Usuario AbrirUsuario (PDB database, bool &sale){
 	int QU = database -> cantidad_usuarios, cont = 0, i = 0, longitud;
 	char nombre[11], n[11], pwrd[13], p[13];
 	bool encontrado = false, coincide = false;
-	while(cont<3 && (!ecnontrado || !coincide)){
-		while(!encontrado){
+	while((!encontrado || !coincide) && i<3){
+		while(!encontrado && i<3){
 			cin.ignore(1000, '\n');
 			cout<<"Ingrese nombre de usuario: ";
+			cin >> ws;
 			gets(nombre);
 			while(!encontrado && cont < QU){
 				strcpy(n, (database->usuarios[cont].nombre));
-				if (strcmp(nombre, n)==0) encontrado = true;
+				if ((strcmp(nombre, n))==0) encontrado = true;
 				else cont++;
 			}
-			cont = 0;
-			if(!encontrado) cout<<"Usuario inexistente."<<endl;
+			if(!encontrado){
+				cout<<"Usuario inexistente."<<endl;
+				i++;
+			}
 		}
-		while(!coincide){
+		while(!coincide && i<3){
 			strcpy(p, (database -> usuarios[cont].contrasena));
-			cin.ignore(1000, '\n');
 			cout<<"Ingrese su contrasena: ";
+			cin>>ws;
 			gets(pwrd);
 			if (strcmp(pwrd, p)==0) coincide = true;
-			else cout<<"Contrasena incorrecta, por favor, intente de nuevo."<<endl;
+			else{
+				i++;
+				cout<<"Contrasena incorrecta, por favor, intente de nuevo."<<endl;
+			}
 		}	
 		if (encontrado && coincide) user = database -> usuarios[cont];
-		else cont++;
 	}
-	if (cont==3) sale = true;
+	if (i==3) sale = true;
 	else sale = false;
 	
 	return user;
@@ -274,22 +293,22 @@ Usuario AbrirUsuario (PDB database, bool &sale){
 // en memoria
 DB AbrirBaseDeDatos(){
 	DB database;
-	PDB aux;
+	PDB aux = &database;
 	ifstream archivo;
 	archivo.open("usuarios.bin",ios::binary);
 	if(!archivo.fail()){
 		// cambie esta parte para que si no logra leer la base de datos devuelva una nueva
-
 		archivo.read((char*) &database, sizeof(database));
 		if (archivo.eof()){
 			crearBaseDeDatos(aux);
 			database = *aux;
 		}
-		
 		archivo.close();
 		
 	}else{
 		// se toma en cuenta que si fail=1 es porque el archivo no existe y se crea uno
+		
+		archivo.close();
 		crearBaseDeDatos(aux);
 		ofstream arch;
 		arch.open("usuarios.bin", ios::binary);
@@ -306,12 +325,13 @@ int calculoPTO(int tiempo){
 	int ret;
 	if (tiempo<=0) ret = 1000000;
 	else ret=60000/tiempo;
-	
+	return ret;
 }
 
 // mejor por nivel, porcentajes de usrs(n) mejor puntaje por nivel por usuario(y fecha del ptje)
 void mostrarPTO(PDB database, int opcion){
 	system(cls);
+
 	switch(opcion){
 		case 1:
 		cout<<"| Nivel |   Usuario   | Puntaje "<<endl;

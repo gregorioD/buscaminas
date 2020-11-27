@@ -5,7 +5,7 @@
 #include <stdio.h>  
 #include <stdlib.h>   
 #include <time.h>
-#include "structs.h"
+#include "structs.cpp"
 
 
 using namespace std;
@@ -57,6 +57,12 @@ int main(){
 			}
 		} while (resultado != 0 && bandera);
 	} while (bandera);
+	system("CLS");
+	cout<<"    ___    ____  ________  _____"<<endl;
+	cout<<"   /   |  / __ \\/  _/ __ \\/ ___/"<<endl;
+	cout<<"  / /| | / / / // // / / /\\__ \\ "<<endl;
+	cout<<" / ___ |/ /_/ // // /_/ /___/ / "<<endl;
+	cout<<"/_/  |_/_____/___/\\____//____/  "<<endl;
 }
 	
 int menuUsuarios(){
@@ -66,12 +72,20 @@ int menuUsuarios(){
 	DB database;
 	Partida match;
 	Usuario user;
+	database = AbrirBaseDeDatos();
+	QUsuarios = database.cantidad_usuarios;
 	
+
+  
+  
+  
 	database = AbrirBaseDeDatos();
 	
 	QUsuarios = database.cantidad_usuarios;
+
 	while(no_termino){
 		if (QUsuarios < 100 && QUsuarios > 0){
+			system("CLS");
 			cout<<"Ingrese una opcion y pulse enter:"<<endl;
 			cout<<"1: Ingresar"<<endl;
 			cout<<"2: Crear usuario"<<endl;
@@ -132,7 +146,7 @@ int menuUsuarios(){
 				do {
 					system("CLS");
 					dificultad = menu();
-					if (dificultad < 4 && dificultad>0) {
+					if (dificultad < 4 && dificultad>0){
 						puntos_jugar = jugar(dificultad, caso);
 						if(caso == 1){
 							GuardarPartida(&match, dificultad, puntos_jugar, caso);
@@ -388,7 +402,7 @@ int menu(){
 	while(!termino){
 		cout<<"Ingrese una opcion y presione enter para continuar:"<<endl;
 		cout << "1 : Dificultad facil" << endl << "2 : Dificultad intermedia" << endl<< "3 : Dificultad dificil"<<endl;
-		cout<<"0 : Salir del juego"<<endl;
+		cout<<"0 : Cerrar sesion"<<endl;
 		cin >> opcion;
 		if ((int)opcion < 48 || (int)opcion > 51){
 			system("CLS");
@@ -421,17 +435,19 @@ bool confirmacion(){
 		cin>>rta;
 		if (rta !='s' && rta !='n'){
 			system("CLS");
-			cout<<"La opcion no es valida, ingrese 's' para salir o 'n' para permanecer en el juego."<<endl;
+			cout<<"La opcion no es valida, ingrese 's' para salir o 'n' para permanecer en la sesion."<<endl;
 			
 		}else if(rta == 's'){
 			devolver = true;
 			conf = false;
+			/*
 			system("CLS");
 			cout<<"    ___    ____  ________  _____"<<endl;
 			cout<<"   /   |  / __ \\/  _/ __ \\/ ___/"<<endl;
 			cout<<"  / /| | / / / // // / / /\\__ \\ "<<endl;
 			cout<<" / ___ |/ /_/ // // /_/ /___/ / "<<endl;
 			cout<<"/_/  |_/_____/___/\\____//____/  "<<endl;
+			*/
 		}else{
 			system("CLS");
 			devolver = false;
