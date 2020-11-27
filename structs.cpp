@@ -7,39 +7,13 @@
 #include <cstdio>
 
 using namespace std;
-// Crear archivo si no existe; 
-bool ExisteBDD(PDB database){
-	bool resultado = false;
-	ifstream archivo;
-	archivo.open("usuarios.bin", ios::binary);
-	if (!archivo.fail()){
-		if(!archivo.eof()) resultado = true;
-		else{
-			crearBaseDeDatos(database);
-		}
-		archivo.close();
-	}else{
-		archivo.close();
-		ofstream archivo2;
-		archivo2.open("usuarios.bin", ios::binary);
-		if(archivo2.fail()){
-			cout<<"";
-		}
-		archivo2.close();
-	}
-	return resultado;
-}
+// Para guardar datos de partidas:
+// se guarda una partida(inicializa), se ejecuta partidaAUsuario para cargar los datos y
+// se ejecuta guardarDB para escribir los datos modificados al archivo (los usuarios se crean
+// dentro de la base de datos por lo que no es necesario cargarlos en la misma)
 
 void crearBaseDeDatos(PDB database){
 	database -> cantidad_usuarios = 0;
-	ofstream archivo;
-	archivo.open("usuarios.bin", ios::binary);
-	if(!archivo.fail()){
-		archivo.write((char*) database, sizeof(*database));
-		archivo.close();
-	}else{
-		cout<<"Error. crearBaseDeDatos"<<endl;
-	}
 }
 
 // inicializa a un usuario con el nombre y contrasenia que el usuario ingrese
@@ -105,6 +79,7 @@ void crearUsuario(PDB database){
 		database -> cantidad_usuarios++;
 		}
 }
+
 void GuardarPartida (PPartida match, int dif, int score, char tipo){
 	// Cambie la funcion para aprovechar que pasaste todo a punteros,
 	// ahora lo que hace es generar una fecha nueva con cada nueva partida
@@ -118,6 +93,7 @@ void GuardarPartida (PPartida match, int dif, int score, char tipo){
 	match -> puntaje = score;
 	match -> tipo = tipo;
 }
+
 void obtenerFecha(Pfecha date){
 	
 	int dig0, dig1, dig2, dig3, mes, anio, dia;
@@ -242,7 +218,6 @@ void partidaAUsuario(PPartida match, PUsuario usr){
 		}
 }
 
-
 // guarda la base de datos ingresada en el archivo
 void guardarDB(PDB database){
 	ofstream archivo;
@@ -256,6 +231,7 @@ void guardarDB(PDB database){
 	}
 
 }
+
 // busca un usuario por su nombre y contrasenia
 Usuario AbrirUsuario (PDB database, bool &sale){
 	Usuario user;
@@ -292,12 +268,9 @@ Usuario AbrirUsuario (PDB database, bool &sale){
 	return user;
 }
 
-
-
-
-
-
 //se ejecuta al comienzo del programa
+// intenta leer un archivo, lo crea si no existe y lee o crea una base de datos para cargar
+// en memoria
 DB AbrirBaseDeDatos(){
 	DB database;
 	PDB aux;
@@ -315,11 +288,16 @@ DB AbrirBaseDeDatos(){
 		archivo.close();
 		
 	}else{
-		puts("Error al abrir el archivo.(Abrir base de datos)");
+		// se toma en cuenta que si fail=1 es porque el archivo no existe y se crea uno
+		crearBaseDeDatos(aux);
+		ofstream arch;
+		arch.open("usuarios.bin", ios::binary);
+		arch.write((char*) aux, sizeof(*aux));
+		database = *aux;
+		//puts("Error al abrir el archivo.(Abrir base de datos)");
 	}
 	return database;
 }
-
 
 //calcula puntos con el tiempo
 int calculoPTO(int tiempo){
@@ -350,9 +328,3 @@ int calculoPTO(int tiempo){
 
 
 
-
-
-
-
-=======
->>>>>>> ff68a62131f4f1e2c628b91a666437990ba4a841

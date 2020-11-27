@@ -31,6 +31,7 @@ int main(){
 	int dificultad, resultado;
 	char entrada;
 	int puntos_jugar;
+	DB basedatos;
 	
 	
 	system("mode con: cols=73 lines=30");
@@ -47,6 +48,7 @@ int main(){
 		cout<<"                 version 2.0.0 - 2020                          "<<endl;
 		system("pause");
 		system("CLS");
+
 		do {
 			resultado = menuUsuarios();
 			if (resultado == -1) {
@@ -57,17 +59,16 @@ int main(){
 }
 	
 int menuUsuarios(){
-	int opcion, devolver, devaluacion_noche, puntos_jugar, dificultad, QUsuarios;
+	int opcion, devolver, dev, puntos_jugar, dificultad, QUsuarios;
 	char caso;
 	bool no_termino = true, sale;
 	DB database;
 	Partida match;
 	Usuario user;
 	
-	if(ExisteBDD(&database)){
-		database = AbrirBaseDeDatos();
-	}
-	QUsuarios = database -> cantidad_usuarios;
+	database = AbrirBaseDeDatos();
+	
+	QUsuarios = database.cantidad_usuarios;
 	while(no_termino){
 		if (QUsuarios < 100 && QUsuarios > 0){
 			cout<<"Ingrese una opcion y pulse enter:"<<endl;
@@ -83,7 +84,7 @@ int menuUsuarios(){
 			}else{
 				no_termino = false;
 				system("CLS");
-				devaluacion_noche = opcion;
+				dev = opcion;
 				
 			}
 		}else{
@@ -100,7 +101,7 @@ int menuUsuarios(){
 				}else{
 					no_termino = false;
 					system("CLS");
-					devaluacion_noche = opcion;
+					dev = opcion;
 					
 				}
 			}else{
@@ -111,19 +112,19 @@ int menuUsuarios(){
 				
 				cin>>opcion;
 				if (opcion<1 || opcion>4 || opcion == 2){
-					cout<<"La opcion ingresada no es valida, cantidad máxima de usuarios alcanzaada, ingrese un valor entre 1 y 4:"<<endl;
+					cout<<"La opcion ingresada no es valida, cantidad mï¿½xima de usuarios alcanzada, ingrese un valor entre 1 y 4:"<<endl;
 					
 				}else{
 					no_termino = false;
 					system("CLS");
-					devaluacion_noche = opcion;
+					dev = opcion;
 					
 				}
 			}
 		}
 		
 	}
-	switch(devaluacion_noche){
+	switch(dev){
 		case 1:
 			user = AbrirUsuario(&database, sale);
 			if (!sale){
@@ -149,7 +150,7 @@ int menuUsuarios(){
 		case 2:
 		//
 			crearUsuario(&database);
-			devolver = 1
+			devolver = 1;
 			break;
 		case 3:
 			// 
@@ -407,7 +408,7 @@ bool confirmacion(){
 	char rta = 0;
 	bool devolver = false, conf = true;
 	system("CLS");
-	cout<<"¿Esta seguro que desea cerrar su sesion?"<<endl;
+	cout<<"ï¿½Esta seguro que desea cerrar su sesion?"<<endl;
 	cout<<"Ingrese 's' para salir o 'n' para permanecer en el juego:"<<endl;
 	while (conf){
 		cin>>rta;
