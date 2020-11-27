@@ -330,123 +330,206 @@ int calculoPTO(int tiempo){
 
 // mejor por nivel, porcentajes de usrs(n) mejor puntaje por nivel por usuario(y fecha del ptje)
 void mostrarPTO(PDB database, int opcion){
-	system(cls);
+	system("CLS");
+	int num, x = 0, m=0, x2=0, mayorXusuario, mayorXnivel, p_usuario;
+	bool flag1=true, flag2=true;
+	char movimiento, rta;
 
-	switch(opcion){
-		case 1:
-		cout<<"| Nivel |   Usuario   | Puntaje "<<endl;
+	if (database->cantidad_usuarios!=0){
+		switch(opcion){
+			case 1:
+			cout<<"| Nivel |   Usuario   | Puntaje "<<endl;
 
-		int mayorXusuario=0, mayorXnivel=0, p_usuario=-1;
-
-		if(database->cantidad_usuarios != 0){
-			for (int i =0; i<database->cantidad_usuarios; i++){
-				if(database->usuarios[i].tlfacil !=0){ // solo si tiene alguna partida jugada
-					for (int j=0;j<database->usuarios[i].tlfacil;j++){
-						if(database->usuarios[i].partidasfacil[j].puntaje > mayorXusuario){
-							mayorXusuario = database->usuarios[i].partidasfacil[j].puntaje;
-						}
-					}
-					if(mayorXusuario>mayorXnivel){
-						mayorXnivel = mayorXusuario;
-						p_usuario = i;
-					}
-				}
-			}
-			if (p_usuario != -1) cout<<"| 1     | "<<database->usuarios[p_usuario].nombre<<" | "<<mayorXnivel<<endl;
-			else cout<<"| 1     | "<<"========== | ==="<<endl;
 			mayorXusuario=0;
 			mayorXnivel=0;
 			p_usuario=-1;
 
-			for (int i =0; i<database->cantidad_usuarios; i++){
-				if(database->usuarios[i].tlmedio !=0){ // solo si tiene alguna partida jugada
-					for (int j=0;j<database->usuarios[i].tlmedio;j++){
-						if(database->usuarios[i].partidasmedio[j].puntaje > mayorXusuario){
-							mayorXusuario = database->usuarios[i].partidasmedio[j].puntaje;
+			if(database->cantidad_usuarios != 0){
+				for (int i =0; i<database->cantidad_usuarios; i++){
+					if(database->usuarios[i].tlfacil !=0){ // solo si tiene alguna partida jugada
+						for (int j=0;j<database->usuarios[i].tlfacil;j++){
+							if(database->usuarios[i].partidasfacil[j].puntaje > mayorXusuario){
+								mayorXusuario = database->usuarios[i].partidasfacil[j].puntaje;
+							}
+						}
+						if(mayorXusuario>mayorXnivel){
+							mayorXnivel = mayorXusuario;
+							p_usuario = i;
 						}
 					}
-					if(mayorXusuario>mayorXnivel){
-						mayorXnivel = mayorXusuario;
-						p_usuario = i;
-					}
 				}
-			}
-			if (p_usuario != -1) cout<<"| 2     | "<<database->usuarios[p_usuario].nombre<<" | "<<mayorXnivel<<endl;
-			else cout<<"| 2     | "<<"========== | ==="<<endl;
-			mayorXusuario=0;
-			mayorXnivel=0;
-			p_usuario=-1;
+				if (p_usuario != -1) cout<<"| 1     | "<<database->usuarios[p_usuario].nombre<<" | "<<mayorXnivel<<endl;
+				else cout<<"| 1     | "<<"========== | ==="<<endl;
+				mayorXusuario=0;
+				mayorXnivel=0;
+				p_usuario=-1;
 
-			for (int i =0; i<database->cantidad_usuarios; i++){
-				if(database->usuarios[i].tldificil !=0){ // solo si tiene alguna partida jugada
-					for (int j=0;j<database->usuarios[i].tldificil;j++){
-						if(database->usuarios[i].partidasdificil[j].puntaje > mayorXusuario){
-							mayorXusuario = database->usuarios[i].partidasdificil[j].puntaje;
+				for (int i =0; i<database->cantidad_usuarios; i++){
+					if(database->usuarios[i].tlmedio !=0){ // solo si tiene alguna partida jugada
+						for (int j=0;j<database->usuarios[i].tlmedio;j++){
+							if(database->usuarios[i].partidasmedio[j].puntaje > mayorXusuario){
+								mayorXusuario = database->usuarios[i].partidasmedio[j].puntaje;
+							}
+						}
+						if(mayorXusuario>mayorXnivel){
+							mayorXnivel = mayorXusuario;
+							p_usuario = i;
 						}
 					}
-					if(mayorXusuario>mayorXnivel){
-						mayorXnivel = mayorXusuario;
-						p_usuario = i;
+				}
+				if (p_usuario != -1) cout<<"| 2     | "<<database->usuarios[p_usuario].nombre<<" | "<<mayorXnivel<<endl;
+				else cout<<"| 2     | "<<"========== | ==="<<endl;
+				mayorXusuario=0;
+				mayorXnivel=0;
+				p_usuario=-1;
+
+				for (int i =0; i<database->cantidad_usuarios; i++){
+					if(database->usuarios[i].tldificil !=0){ // solo si tiene alguna partida jugada
+						for (int j=0;j<database->usuarios[i].tldificil;j++){
+							if(database->usuarios[i].partidasdificil[j].puntaje > mayorXusuario){
+								mayorXusuario = database->usuarios[i].partidasdificil[j].puntaje;
+							}
+						}
+						if(mayorXusuario>mayorXnivel){
+							mayorXnivel = mayorXusuario;
+							p_usuario = i;
+						}
 					}
 				}
+				if (p_usuario != -1) cout<<"| 3     | "<<database->usuarios[p_usuario].nombre<<" | "<<mayorXnivel<<endl;
+				else cout<<"| 3     | "<<"========== | ==="<<endl;
+				mayorXusuario=0;
+				mayorXnivel=0;
+				p_usuario=-1;
+			}else{
+				cout<<"| 1     | "<<"========== | ==="<<endl;
+				cout<<"| 2     | "<<"========== | ==="<<endl;
+				cout<<"| 3     | "<<"========== | ==="<<endl;
 			}
-			if (p_usuario != -1) cout<<"| 3     | "<<database->usuarios[p_usuario].nombre<<" | "<<mayorXnivel<<endl;
-			else cout<<"| 3     | "<<"========== | ==="<<endl;
-			mayorXusuario=0;
-			mayorXnivel=0;
-			p_usuario=-1;
-		}else{
-			cout<<"| 1     | "<<"========== | ==="<<endl;
-			cout<<"| 2     | "<<"========== | ==="<<endl;
-			cout<<"| 3     | "<<"========== | ==="<<endl;
-		}
-		break;
+			break;
 
-		case 2:
-		// mover despues de 32 lineas
-		int num, x = 0, m=0, x2=0;
-		bool flag1=true, flag2=true;
-		char movimiento, rta; // j=abajo k=arriba
-
-		cout<<"Ingrese la cantidad de usuarios a mostrar (un numero entre 1 y "<<database->cantidad_usuarios<<"): "<<endl;
-		cin>>num;
-		while (num<1 || num>database->cantidad_usuarios){
-			system(cls);
-			cout<<"El numero ingresado no es valido: Ingrese un valor entre 1 y "<<database->cantidad_usuarios<<":"<<endl;
+			case 2:
+			cout<<"Ingrese la cantidad de usuarios a mostrar (un numero entre 1 y "<<database->cantidad_usuarios<<"): "<<endl;
 			cin>>num;
+			while (num<1 || num>database->cantidad_usuarios){
+				system("CLS");
+				cout<<"El numero ingresado no es valido: Ingrese un valor entre 1 y "<<database->cantidad_usuarios<<":"<<endl;
+				cin>>num;
 
-		}
-		cout<<"   Usuario   | % Ganadas | % Perdidas | % Abandonos"<<endl;
-		while (flag1){
-			x = x2;
-			while (flag2 && m<32){
-				system(cls);
-				cout<<" "<<database->usuarios[x].nombre<<" | "<<database->usuarios[x].ganadas<<"        | ";
-				cout<<database->usuarios[x].perdidas<<"         | "<<database->usuarios[x].abandonos<<endl;
-				x++;
-				m++;
-				if (x==num) flag2=false;
+			}
+			
+			while (flag1){
+				cout<<"   Usuario   | % Ganadas | % Perdidas | % Abandonos"<<endl;
+				x = x2;
+				while (flag2 && m<32){
+					cout<<" "<<database->usuarios[x].nombre<<" | "<<database->usuarios[x].ganadas<<"        | ";
+					cout<<database->usuarios[x].perdidas<<"         | "<<database->usuarios[x].abandonos<<endl;
+					x++;
+					m++;
+					if (x==num) flag2=false;
+				}
 				cout<<"\n\nUtilice 'j' y 'k' para desplazarse o ingrese 'q' para volver al menu";
-			}
-			m=0;
-			movimiento = getch();
-			if (movimiento == 'j' && x2<num-1){
-				x2++;
-			}else if (movimiento == 'k' && x2>0){
-				x2--;
-			}else if (movimiento == 'q'){
-				cout<<"Desea salir al menu: s / n"<<endl;
-				cin>>rta;
-				if(rta=='s') flag1 = false;
+				m=0;
+				movimiento = getch();
+				if (movimiento == 'j' && x2<num-1){
+					x2++;
+				}else if (movimiento == 'k' && x2>0){
+					x2--;
+				}else if (movimiento == 'q'){
+					cout<<"Desea salir al menu: s / n"<<endl;
+					cin>>rta;
+					if(rta=='s') flag1 = false;
 
+				}
+				system("CLS");
 			}
-		}
+			break;
+
+			case 3:
+			int mejpartf, mejpartm, mejpartd;
+			
+			while (flag1){
+				cout<<" Usuario     | Nivel |  Fecha   | Mejor Puntaje"<<endl;
+				x = x2;
+				while (flag2 && m<10){
+					mejpartf = mejorPartida(&(database->usuarios[x]), 1);
+					mejpartm = mejorPartida(&(database->usuarios[x]), 2);
+					mejpartd = mejorPartida(&(database->usuarios[x]), 3);
+					cout<<database->usuarios[x].nombre<<" | 1     | ";
+					if(mejpartf!=-1){
+						cout<<database->usuarios[x].partidasfacil[mejpartf].fecha->dia;
+						cout<<"/"<<database->usuarios[x].partidasfacil[mejpartf].fecha->mes<<"/"<<database->usuarios[x].partidasfacil[mejpartf].fecha->anyo;
+						cout<<" | "<<database->usuarios[x].partidasfacil[mejpartf].puntaje<<endl;
+					}else cout<<"-        | -"<<endl;
+
+					if(mejpartm!=-1){
+						cout<<"              | 1     | "<<database->usuarios[x].partidasmedio[mejpartm].fecha->dia;
+						cout<<"/"<<database->usuarios[x].partidasmedio[mejpartm].fecha->mes<<"/"<<database->usuarios[x].partidasmedio[mejpartm].fecha->anyo;
+						cout<<" | "<<database->usuarios[x].partidasmedio[mejpartm].puntaje<<endl;
+					}else cout<<"-        | -"<<endl;
+
+					if(mejpartf!=-1){
+						cout<<"              | 1     | "<<database->usuarios[x].partidasdificil[mejpartd].fecha->dia;
+						cout<<"/"<<database->usuarios[x].partidasdificil[mejpartd].fecha->mes<<"/"<<database->usuarios[x].partidasdificil[mejpartd].fecha->anyo;
+						cout<<" | "<<database->usuarios[x].partidasdificil[mejpartd].puntaje<<endl;
+					}else cout<<"-        | -"<<endl;
+
+					x++;
+					m++;
+					if (x==database->cantidad_usuarios) flag2=false;
+				}
+				cout<<"\n\nUtilice 'j' y 'k' para desplazarse o ingrese 'q' para volver al menu";
+				m=0;
+				movimiento = getch();
+				if (movimiento == 'j' && x2<num-1){
+					x2++;
+				}else if (movimiento == 'k' && x2>0){
+					x2--;
+				}else if (movimiento == 'q'){
+					cout<<"Desea salir al menu: s / n"<<endl;
+					cin>>rta;
+					if(rta=='s') flag1 = false;
+
+				}
+				system("CLS");
+
+
 
 		}
+	}
+	}else cout<<"No hay ningun dato guardado :("<<endl;
 }
 
 
-
+// devuelve la posicion de la mejor partida 
+// devuelve -1 si el usuario no tiene partidas en ese nivel
+int mejorPartida(PUsuario usr, int dif){
+	int ret=-1;
+	int mejpuntos =0;
+	if(dif==1){
+		for (int i=0;i<usr->tlfacil;i++){
+			if(mejpuntos<=usr->partidasfacil[i].puntaje){
+				mejpuntos = usr->partidasfacil[i].puntaje;
+				ret = i;
+			}
+		}
+	}else if (dif==2){
+		for (int i=0;i<usr->tlmedio;i++){
+			if(mejpuntos<=usr->partidasmedio[i].puntaje){
+				mejpuntos = usr->partidasmedio[i].puntaje;
+				ret = i;
+			}
+		}
+	}else {
+		for (int i=0;i<usr->tldificil;i++){
+			if(mejpuntos<=usr->partidasdificil[i].puntaje){
+				mejpuntos = usr->partidasdificil[i].puntaje;
+				ret = i;
+			}
+		}
+	}
+	return ret;
+}
 
 
 

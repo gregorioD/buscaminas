@@ -172,10 +172,22 @@ int menuUsuarios(){
 			cout<<"1: Mejor por dificultad"<<endl;
 			cout<<"2: Ranking de usuarios"<<endl;
 			cout<<"3: Mejores partidas por usuario"<<endl;
-			// falta validacion
-			cin>>op_pto;
-			mostrarPTO(&database, op_pto);
-			devolver = 1;
+			cout<<"0: Salir"<<endl;
+			while (op_pto>3 || op_pto<0){
+				system("CLS");
+				cout<<"Opcion no valida:"<<endl;
+				cout<<"1: Mejor por dificultad"<<endl;
+				cout<<"2: Ranking de usuarios"<<endl;
+				cout<<"3: Mejores partidas por usuario"<<endl;
+				cout<<"0: Salir"<<endl;
+				cin>>op_pto;
+			}
+			if(op_pto==0){
+				devolver = -1;
+			}else{
+				mostrarPTO(&database, op_pto);
+				devolver = 1;
+			}
 			break;
 		case 4:
 			devolver = -1;
@@ -371,7 +383,7 @@ int jugar (int dificultad, char &caso){
 			cin.ignore(100000, '\n');
 		}
 	}
-	return tiempofinal;
+	return calculoPTO(tiempofinal);
 }
 								
 bool ganaste (int tlX, int tlY, char Pantalla[16][30], bool Bombas[16][30]){
