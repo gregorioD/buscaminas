@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <iomanip>
-#include <conio.h>
+//#include <conio.h>
 
 
 
@@ -531,10 +531,9 @@ int mejorPartida(PUsuario usr, int dif){
 
 // encriptar = true: encripta, sino desencripta
 void encriptar(PUsuario user, bool encriptar){
-	char referencia[58]; // 58 caracteres posibles para la contrasenia
+	char referencia[58]= {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', (char)164, 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '$', '#', '%', '&', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', (char)165, 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 	int pos, j=0;
 	bool encontro=false;
-	referencia = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', (char)164, 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '$', '#', '%', '&', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', (char)165, 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 	if(encriptar){
 		for (int i=0;i<13;i++){
 			while (j<58 && !encontro){
