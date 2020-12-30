@@ -34,14 +34,18 @@ void crearUsuario(PDB database){
 		
 		while(!correcto){
 			cin >> ws;
-			gets(nombre);
+			fgets(nombre, 11, stdin);
+            cin.ignore(1000, '\n');
+            cout<<"nombre: "<<nombre<<endl;
 			if(strlen(nombre)>7 && strlen(nombre) <11){
 				tamanoCorrecto = true;
 			}
-			while(esAlNum && cont<strlen(nombre)){
+            cout<<strlen(nombre)<<endl;
+			while(esAlNum && cont<strlen(nombre)-1){
 				if(!isalnum(nombre[cont])) esAlNum = false;
 				else cont++;
 			}
+            if(esAlNum) cout<<"si"<<endl;
 			cont = 0;
 			if(QUsuarios > 0){
 				while(esUnic && cont < QUsuarios){
@@ -51,6 +55,7 @@ void crearUsuario(PDB database){
 				}
 				cont = 0;
 			}
+            if (esUnic) cout<<"si"<<endl;
 			if (tamanoCorrecto && esAlNum && esUnic){
 				correcto = true;
 			}else{
@@ -68,7 +73,8 @@ void crearUsuario(PDB database){
 		cout<<"Ingrese su contrasena: ";
 		while (!correcto){
 			cin >> ws;
-			gets(contrasena);
+			fgets(contrasena, 13, stdin);
+            cin.ignore(1000, '\n');
 			if (strlen(contrasena) > 0 && strlen(contrasena)<13){
 				tamanoCorrecto = true;
 			}
@@ -258,7 +264,8 @@ Usuario AbrirUsuario (PDB database, bool &sale){
 			cin.ignore(1000, '\n');
 			cout<<"Ingrese nombre de usuario: ";
 			cin >> ws;
-			gets(nombre);
+			fgets(nombre, 11, stdin);
+            cin.ignore(1000, '\n');
 			while(!encontrado && cont < QU){
 				strcpy(n, (database->usuarios[cont].nombre));
 				if ((strcmp(nombre, n))==0) encontrado = true;
@@ -273,7 +280,8 @@ Usuario AbrirUsuario (PDB database, bool &sale){
 			strcpy(p, (database -> usuarios[cont].contrasena));
 			cout<<"Ingrese su contrasena: ";
 			cin>>ws;
-			gets(pwrd);
+			fgets(pwrd, 13, stdin);
+            cin.ignore(1000, '\n');
 			if (strcmp(pwrd, p)==0) coincide = true;
 			else{
 				i++;
@@ -429,7 +437,7 @@ void mostrarPTO(PDB database, int opcion){
 				}
 				cout<<"\n\nUtilice 'j' y 'k' para desplazarse o ingrese 'q' para volver al menu";
 				m=0;
-				movimiento = getch();
+				movimiento = getchar();
 				if (movimiento == 'j' && x2<num-1){
 					x2++;
 				}else if (movimiento == 'k' && x2>0){
@@ -478,7 +486,7 @@ void mostrarPTO(PDB database, int opcion){
 				}
 				cout<<"\n\nUtilice 'j' y 'k' para desplazarse o ingrese 'q' para volver al menu";
 				m=0;
-				movimiento = getch();
+				movimiento = getchar();
 				if (movimiento == 'j' && x2<num-1){
 					x2++;
 				}else if (movimiento == 'k' && x2>0){
