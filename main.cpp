@@ -173,6 +173,7 @@ int menuUsuarios(){
 			cout<<"2: Ranking de usuarios"<<endl;
 			cout<<"3: Mejores partidas por usuario"<<endl;
 			cout<<"0: Salir"<<endl;
+            cin>>op_pto;
 			while (op_pto>3 || op_pto<0){
 				system("CLS");
 				cout<<"Opcion no valida:"<<endl;

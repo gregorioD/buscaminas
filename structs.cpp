@@ -36,15 +36,18 @@ void crearUsuario(PDB database){
 			cin >> ws;
 			fgets(nombre, 11, stdin);
             cin.ignore(1000, '\n');
+            //borrar
             cout<<"nombre: "<<nombre<<endl;
 			if(strlen(nombre)>7 && strlen(nombre) <11){
 				tamanoCorrecto = true;
 			}
+            //borrar
             cout<<strlen(nombre)<<endl;
 			while(esAlNum && cont<strlen(nombre)-1){
 				if(!isalnum(nombre[cont])) esAlNum = false;
 				else cont++;
 			}
+            //borrar
             if(esAlNum) cout<<"si"<<endl;
 			cont = 0;
 			if(QUsuarios > 0){
@@ -55,6 +58,7 @@ void crearUsuario(PDB database){
 				}
 				cont = 0;
 			}
+            //borrar
             if (esUnic) cout<<"si"<<endl;
 			if (tamanoCorrecto && esAlNum && esUnic){
 				correcto = true;
@@ -339,6 +343,8 @@ int calculoPTO(int tiempo){
 // mejor por nivel, porcentajes de usrs(n) mejor puntaje por nivel por usuario(y fecha del ptje)
 void mostrarPTO(PDB database, int opcion){
 	system("CLS");
+    //borrar
+    cout<<"Entrando a mostrarPTO"<<endl;
 	int num, x = 0, m=0, x2=0, mayorXusuario, mayorXnivel, p_usuario;
 	bool flag1=true, flag2=true;
 	char movimiento, rta;
