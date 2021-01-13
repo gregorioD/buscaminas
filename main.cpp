@@ -84,8 +84,8 @@ int menuUsuarios(){
 	QUsuarios = database.cantidad_usuarios;
 
 	while(no_termino){
-		if (QUsuarios < 100 && QUsuarios > 0){
 			system("CLS");
+		if (QUsuarios < 100 && QUsuarios > 0){
 			cout<<"Ingrese una opcion y pulse enter:"<<endl;
 			cout<<"1: Ingresar"<<endl;
 			cout<<"2: Crear usuario"<<endl;
@@ -150,11 +150,14 @@ int menuUsuarios(){
 						puntos_jugar = jugar(dificultad, caso);
 						if(caso == 1){
 							GuardarPartida(&match, dificultad, puntos_jugar, caso);
-							partidaAUsuario(&match, &user);
 						}else{
 							GuardarPartida(&match, dificultad, 0, caso);
-							partidaAUsuario(&match, &user);
 						}
+                        // actualizacion de mejores partidas, ranking y mejores usuarios x nivel
+						partidaAUsuario(&match, &user);
+                        ordenarPartidas(user, dificultad);
+                        mejorXNiv(&database);
+                        OrdenarUsuarios(&database);
 					}
 				} while (dificultad != 0);
 				devolver = 1;
@@ -186,7 +189,7 @@ int menuUsuarios(){
 			if(op_pto==0){
 				devolver = -1;
 			}else{
-				mostrarPTO(&database, op_pto);
+				Puntaje(op_pto, &database);
 				devolver = 1;
 			}
 			break;
