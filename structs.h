@@ -52,3 +52,11 @@ DB AbrirBaseDeDatos();
 void mostrarPTO(PDB database, int opcion);
 int mejorPartida(PUsuario usr, int dif);
 void OrdenarUsuarios (PDB database);
+int mejorXNiv(int dificultad, PDB db);
+void ordenarPartidas(Usuario user, int dificultad);
+void strFecha(char fecha[11], Pfecha fech);
+void DibujarCuad(char *str, int ancho, char separador='|');
+void Puntaje(int opcion, PDB);
+
+
+

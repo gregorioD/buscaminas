@@ -630,11 +630,11 @@ void ordenarPartidas(Usuario user, int dificultad){
         user.partidasdificil[0] = aux;
 }
 
-void strFecha(char fecha[11], Partida part){
-        char dia[3],mes[3],anio[5], fch[];
-        sprintf(dia, "%d", part.fecha->dia);
-        sprintf(mes, "%d", part.fecha->mes);
-        sprintf(mes, "%d", part.fecha->anyo);
+void strFecha(char fecha[11], Pfecha fech){
+        char dia[3],mes[3],anio[5];
+        sprintf(dia, "%d", fech->dia);
+        sprintf(mes, "%d", fech->mes);
+        sprintf(mes, "%d", fech->anyo);
         fecha[0] = '\0';
         strcat(fecha, dia);strcat(fecha, "/");strcat(fecha, mes);strcat(fecha, "/");strcat(fecha, anyo);
 }
