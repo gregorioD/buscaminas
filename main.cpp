@@ -27,13 +27,12 @@ void mensajePerdiste(int tlX, int tlY, bool Bombas[16][30]);
 int menuUsuarios();
 
 int main(){
-	system("color 10");
+	system("color 30");
 	bool bandera = true;
 	int dificultad, resultado;
 	char entrada;
 	int puntos_jugar;
 	DB basedatos;
-	
 	
 	system("mode con: cols=73 lines=30");
 	do{

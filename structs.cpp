@@ -384,7 +384,7 @@ void DibujarCuad(char *str, int ancho, char separador){
 
 void Puntaje(int opcion, PDB db){
         int an1, an2, an3, an4;
-        int num, pos=0, x = 0, linea = 0, maxLineas = 15;// maximo de lineas a mostrar al mismo tiempo
+        int num, pos=0, x = 0, linea = 0, maxLineas = 27;// maximo de lineas a mostrar al mismo tiempo
         bool flag1 = true,flag2 = true; // banderas de bucles
         char buffer[100];
 
@@ -511,7 +511,7 @@ void Puntaje(int opcion, PDB db){
                         cout<<"Nada que mostrar: No hay usuarios registrados"<<endl;
                         system("pause");
                 }else{
-                        num = db->cantidad_usuarios; pos=0; x = 0; linea = 0; maxLineas = 15;
+                        num = db->cantidad_usuarios; pos=0; x = 0; linea = 0;
                         an1 = 11;an2 = 7;an3 = 11;an4 = 11; 
                         flag1 = true;flag2 = true;
                         char fecha[11];
