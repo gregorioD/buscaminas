@@ -29,9 +29,12 @@ struct Usuario{
 
 typedef struct Usuario* PUsuario;
 
+
 struct DB{
 	Usuario usuarios[100];
 	int cantidad_usuarios = 0;
+    int mejorFacil, mejorMedio, mejorDificil;
+    int ranking[100];// indices de usuarios ordenados
 };
 
 typedef struct DB* PDB;

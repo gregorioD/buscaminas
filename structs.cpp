@@ -20,6 +20,9 @@ using namespace std;
 
 void crearBaseDeDatos(PDB database){
 	database -> cantidad_usuarios = 0;
+    mejorFacil=0;
+    mejorMedio=0;
+    mejorDificil=0;
 }
 
 // inicializa a un usuario con el nombre y contrasenia que el usuario ingrese

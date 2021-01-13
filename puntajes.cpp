@@ -3,194 +3,266 @@
 #include <cstring>
 #include <cstdlib>
 #include <cstdio>
+#include <windows.h>
 
 using namespace std;
 
+void gotoxy(USHORT x, USHORT y){// Mueve el cursor, necesita windows.h
+        COORD cp = {x,y};
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cp);
+}
 
-void mostrarPTO(int opcion, int cantidad_u, PUsuario usuarios){
-	system("CLS");
-    //borrar
-    cout<<"Entrando a mostrarPTO"<<endl;
-	int num, x = 0, m=0, x2=0, mayorXusuario, mayorXnivel, p_usuario;
-	bool flag1=true, flag2=true;
-	char movimiento, rta;
+void DibujarCuad(char *str, int ancho, char separador='|'){
+        // Imprime una string agrega separadores y determina
+        // el tamano del cuadrado con ancho 
+        cout<<separador<<' '<<str;
+        for (int i=0;i<(ancho-(int)(strlen(str)));i++){
+                cout<<' ';}
+        // resultado
+        // 'sep' str'espacios''fin'
+}
 
-	if (cantidad_u!=0){
-            // mejor usuario por nivel y su puntaje
-		switch(opcion){
-			case 1:
-			cout<<"| Nivel |   Usuario   | Puntaje "<<endl;
+void Puntaje(int opcion){
+        int an1, an2, an3, an4;
+        int num, pos=0, x = 0, linea = 0, maxLineas = 15;// maximo de lineas a mostrar al mismo tiempo
+        bool flag1 = true,flag2 = true; // banderas de bucles
+        char buffer[100];
 
-			mayorXusuario=0;
-			mayorXnivel=0;
-			p_usuario=-1;
+        switch(opcion){
+                case 1:
+                an1=7;an2=11;an3=7;
+                // previamente se deben transformar los puntajes a string 
+                sprintf(buffer, "%d", 4);
+                DibujarCuad("Nivel",an1);DibujarCuad("Usuario",an2);DibujarCuad("Puntaje",an3);
+                cout<<endl;
 
-			if(cantidad_u != 0){
-				for (int i =0; i<cantidad_u; i++){
-					if(usuarios[i].tlfacil !=0){ // solo si tiene alguna partida jugada
-						for (int j=0;j<usuarios[i].tlfacil;j++){
-							if(usuarios[i].partidasfacil[j].puntaje > mayorXusuario){
-								mayorXusuario = usuarios[i].partidasfacil[j].puntaje;
-							}
-						}
-						if(mayorXusuario>mayorXnivel){
-							mayorXnivel = mayorXusuario;
-							p_usuario = i;
-						}
-					}
-				}
-				if (p_usuario != -1) cout<<"| 1     | "<<usuarios[p_usuario].nombre<<" | "<<mayorXnivel<<endl;
-				else cout<<"| 1     | "<<"========== | ==="<<endl;
-				mayorXusuario=0;
-				mayorXnivel=0;
-				p_usuario=-1;
+                sprintf(buffer, "%d", 4);
+                DibujarCuad("Facil",an1);DibujarCuad("francougo",an2);
+                DibujarCuad("23",an3);
+                cout<<endl;
+                buffer[0] = '\0';
 
-				for (int i =0; i<cantidad_u; i++){
-					if(usuarios[i].tlmedio !=0){ // solo si tiene alguna partida jugada
-						for (int j=0;j<usuarios[i].tlmedio;j++){
-							if(usuarios[i].partidasmedio[j].puntaje > mayorXusuario){
-								mayorXusuario = usuarios[i].partidasmedio[j].puntaje;
-							}
-						}
-						if(mayorXusuario>mayorXnivel){
-							mayorXnivel = mayorXusuario;
-							p_usuario = i;
-						}
-					}
-				}
-				if (p_usuario != -1) cout<<"| 2     | "<<usuarios[p_usuario].nombre<<" | "<<mayorXnivel<<endl;
-				else cout<<"| 2     | "<<"========== | ==="<<endl;
-				mayorXusuario=0;
-				mayorXnivel=0;
-				p_usuario=-1;
+                sprintf(buffer, "%d", 4);
+                DibujarCuad("Medio",an1);DibujarCuad("gregoUwU",an2);
+                DibujarCuad("45",an3);
+                cout<<endl;
+                buffer[0] = '\0';
 
-				for (int i =0; i<cantidad_u; i++){
-					if(usuarios[i].tldificil !=0){ // solo si tiene alguna partida jugada
-						for (int j=0;j<usuarios[i].tldificil;j++){
-							if(usuarios[i].partidasdificil[j].puntaje > mayorXusuario){
-								mayorXusuario = usuarios[i].partidasdificil[j].puntaje;
-							}
-						}
-						if(mayorXusuario>mayorXnivel){
-							mayorXnivel = mayorXusuario;
-							p_usuario = i;
-						}
-					}
-				}
-				if (p_usuario != -1) cout<<"| 3     | "<<usuarios[p_usuario].nombre<<" | "<<mayorXnivel<<endl;
-				else cout<<"| 3     | "<<"========== | ==="<<endl;
-				mayorXusuario=0;
-				mayorXnivel=0;
-				p_usuario=-1;
-			}else{
-				cout<<"| 1     | "<<"========== | ==="<<endl;
-				cout<<"| 2     | "<<"========== | ==="<<endl;
-				cout<<"| 3     | "<<"========== | ==="<<endl;
-			}
-			break;
+                sprintf(buffer, "%d", 4);
+                DibujarCuad("Dificil",an1);DibujarCuad("gustiCKT",an2);
+                DibujarCuad("12",an3);
+                cout<<endl;
+                buffer[0] = '\0';
 
-			case 2:
-            // Una cantidad definida por el usuario de usuarios con sus porcentajes
-			cout<<"Ingrese la cantidad de usuarios a mostrar (un numero entre 1 y "<<cantidad_u<<"): "<<endl;
-			cin>>num;
-			while (num<1 || num>cantidad_u){
-				system("CLS");
-				cout<<"El numero ingresado no es valido: Ingrese un valor entre 1 y "<<cantidad_u<<":"<<endl;
-				cin>>num;
-			}
-			
-			while (flag1){
-				cout<<"   Usuario   | % Ganadas | % Perdidas | % Abandonos"<<endl;
-				x = x2;
-				while (flag2 && m<32){
-					cout<<" "<<usuarios[x].nombre<<" | "<<usuarios[x].ganadas<<"        | ";
-					cout<<usuarios[x].perdidas<<"         | "<<usuarios[x].abandonos<<endl;
-					x++;
-					m++;
-					if (x==num) flag2=false;
-				}
-				cout<<"\n\nUtilice 'j' y 'k' para desplazarse o ingrese 'q' para volver al menu";
-				m=0;
-				movimiento = getchar();
-				if (movimiento == 'j' && x2<num-1){
-					x2++;
-				}else if (movimiento == 'k' && x2>0){
-					x2--;
-				}else if (movimiento == 'q'){
-					cout<<"Desea salir al menu: s / n"<<endl;
-					cin>>rta;
-					if(rta=='s') flag1 = false;
-				}
-				system("CLS");
-			}
-			break;
+                break;
+                case 2:
+                an1 = 11;an2 = 9;an3 = 10;an4 = 11; // anchos de los cuadrados a imprimir
 
-			case 3:
-            // mejor partida de cada nivel de cada usuario
-			int mejpartf, mejpartm, mejpartd;
-			
-			while (flag1){
-				cout<<" Usuario     | Nivel |  Fecha   | Mejor Puntaje"<<endl;
-				x = x2;
-				while (flag2 && m<10){
-					mejpartf = mejorPartida(&(usuarios[x]), 1);
-					mejpartm = mejorPartida(&(usuarios[x]), 2);
-					mejpartd = mejorPartida(&(usuarios[x]), 3);
-					cout<<usuarios[x].nombre<<" | 1     | ";
-					if(mejpartf!=-1){
-						cout<<usuarios[x].partidasfacil[mejpartf].fecha->dia;
-						cout<<"/"<<usuarios[x].partidasfacil[mejpartf].fecha->mes<<"/"<<usuarios[x].partidasfacil[mejpartf].fecha->anyo;
-						cout<<" | "<<usuarios[x].partidasfacil[mejpartf].puntaje<<endl;
-					}else cout<<"-        | -"<<endl;
+                // validacion
+                cout<<"Ingrese la cantidad de usuarios a mostrar (un numero entre 1 y "<<50<<"): "<<endl;
+			    while (!(cin>>num) || (num<1 || num>50)){ 
+                        cout<<"Caracter incorrecto, ingrese un numero entre 1 y "<<50<<endl;
+                        cin.clear();
+                        cin.ignore(200, '\n');
+                }
+                while (flag1){
+                        cout<<"while 1"<<endl;
+                        DibujarCuad("Usuario", an1);
+                        DibujarCuad("% Ganadas", an2);
+                        DibujarCuad("% Perdidas", an3);
+                        DibujarCuad("% Abandonos", an4);
+                        cout<<endl;
+                        x = pos;
+                        flag2 = true; // para subir luego de llegar al ultimo elemento
+                        // Imprimir porcentajes
+                        while (flag2 && linea<maxLineas){
+                                cout<<x<<' ';
+                                DibujarCuad("francougo", an1);
 
-					if(mejpartm!=-1){
-						cout<<"              | 1     | "<<usuarios[x].partidasmedio[mejpartm].fecha->dia;
-						cout<<"/"<<usuarios[x].partidasmedio[mejpartm].fecha->mes<<"/"<<usuarios[x].partidasmedio[mejpartm].fecha->anyo;
-						cout<<" | "<<usuarios[x].partidasmedio[mejpartm].puntaje<<endl;
-					}else cout<<"-        | -"<<endl;
+                                sprintf(buffer, "%.1f", 50.5);
+                                DibujarCuad(buffer, an2);
+                                buffer[0] = '\0';
 
-					if(mejpartf!=-1){
-						cout<<"              | 1     | "<<usuarios[x].partidasdificil[mejpartd].fecha->dia;
-						cout<<"/"<<usuarios[x].partidasdificil[mejpartd].fecha->mes<<"/"<<usuarios[x].partidasdificil[mejpartd].fecha->anyo;
-						cout<<" | "<<usuarios[x].partidasdificil[mejpartd].puntaje<<endl;
-					}else cout<<"-        | -"<<endl;
+                                sprintf(buffer, "%.1f", 24.5);
+                                DibujarCuad(buffer, an3);
+                                buffer[0] = '\0';
 
-					x++;
-					m++;
-					if (x==cantidad_u) flag2=false;
-				}
-				cout<<"\n\nUtilice 'j' y 'k' para desplazarse o ingrese 'q' para volver al menu";
-				m=0;
-				movimiento = getchar();
-				if (movimiento == 'j' && x2<num-1){
-					x2++;
-				}else if (movimiento == 'k' && x2>0){
-					x2--;
-				}else if (movimiento == 'q'){
-					cout<<"Desea salir al menu: s / n"<<endl;
-					cin>>rta;
-					if(rta=='s') flag1 = false;
-				}
-				system("CLS");
-			}
-		}
-	}else cout<<"No hay ningun dato guardado :("<<endl;
+                                sprintf(buffer, "%.1f", 25.0);
+                                DibujarCuad(buffer, an4);
+                                buffer[0] = '\0';
+
+                                cout<<endl;
+                                ++x;
+                                linea++;
+                                if (x==num) flag2 = false;
+                        }
+                        linea = 0;
+                        // movimiento
+                        cout<<"Presione 'j' o 'k' para scrolear o 'q' para salir:"<<endl;
+                        system("pause");
+                        if (GetAsyncKeyState(0x4A)) if ((pos+maxLineas)<num){
+                                pos++;
+                        }
+                        if (GetAsyncKeyState(0x4B)) if (pos>0){
+                                pos--;
+                        }
+                        // salir al menu
+                        if (GetAsyncKeyState(0x51)){
+                                flag1 = false;
+                        }
+                }
+                break;
+                case 3:
+                num; pos=0; x = 0; linea = 0; maxLineas = 15;
+                an1 = 11;an2 = 7;an3 = 11;an4 = 11; 
+                flag1 = true;flag2 = true;
+                num = 10;
+                char fecha[11];
+
+                while (flag1){
+                        DibujarCuad("Usuario", an1);DibujarCuad("Nivel", an2);
+                        DibujarCuad("Fecha", an3);DibujarCuad("Mejor Puntaje", an4);
+                        cout<<endl;
+                        x = pos;
+                        flag2 = true;
+                        cout<<"x: "<<x<<endl;
+                        while(flag2 && linea<(maxLineas/3)){
+                                strFecha(fecha, Part);
+                                sprintf(buffer, "%d", 999);
+                                DibujarCuad("francougo", an1);DibujarCuad("Facil", an2);
+                                DibujarCuad(fecha, an3);DibujarCuad("ptj", an4);
+                                cout<<"  "<<x;
+                                cout<<endl;
+
+                                strFecha(fecha, Part);
+                                sprintf(buffer, "%d", 999);
+                                DibujarCuad("-", an1);DibujarCuad("Medio", an2);
+                                DibujarCuad(fecha, an3);DibujarCuad("ptj", an4);
+                                cout<<endl;
+
+                                strFecha(fecha, Part);
+                                sprintf(buffer, "%d", 999);
+                                DibujarCuad("-", an1);DibujarCuad("Dificil", an2);
+                                DibujarCuad(fecha, an3);DibujarCuad("ptj", an4);
+
+                                cout<<endl;
+                                ++x;
+                                linea++;
+                                if (x==num) flag2 = false;
+                        }
+                        linea = 0;
+                        cout<<"Presione 'j' o 'k' para scrolear o 'q' para salir:"<<endl;
+                        system("pause");
+                        if (GetAsyncKeyState(0x4A)) if ((pos+maxLineas/3)<num){
+                                pos++;
+                                cout<<"incrementing pos"<<endl;
+                        }
+                        if (GetAsyncKeyState(0x4B)) if (pos>0){
+                                pos--;
+                        }
+                        // salir al menu
+                        if (GetAsyncKeyState(0x51)){
+                                flag1 = false;
+                                cout<<"exiting"<<endl;
+                        }
+                }
+
+
+                
+        }
+} 
+                        
+void ordenarRanking(){
 }
 
 
+int mejorXNiv(int dificultad, PDB db){
+        int mejPuntaje = 0, indice = -1;
+        int qUsuarios = db -> cantidad_usuarios;
+
+        switch(dificultad){
+                case 1:
+
+                for (int i=0;i<qUsuarios;i++){
+                        if (db -> usuarios[i].partidasfacil[0].puntaje > mejPuntaje){
+                                mejPuntaje = db -> usuarios[i].partidasfacil[0].puntaje;
+                                indice = i;
+                        }
+                }
+                break;
+                case 2:
+                for (int i=0;i<qUsuarios;i++){
+                        if (db -> usuarios[i].partidasmedio[0].puntaje > mejPuntaje){
+                                mejPuntaje = db -> usuarios[i].partidasmedio[0].puntaje;
+                                indice = i;
+                        }
+                }
+                break;
+                case 3:
+                for (int i=0;i<qUsuarios;i++){
+                        if (db -> usuarios[i].partidasdificil[0].puntaje > mejPuntaje){
+                                mejPuntaje = db -> usuarios[i].partidasdificil[0].puntaje;
+                                indice = i;
+                        }
+                }
+                break;
+        }
+
+        return indice;
+}
+                        
+void ordenarPartidas(Usuario user, int dificultad){
+        // Coloca la partida con el mayor puntaje en el indice 0 de cada arreglo 
+        Partida aux;
+        int pIndex, usrMax = 0;
+
+        for (int j=0;j<user.tlfacil;j++){
+                if (user.partidasfacil[j].puntaje > usrMax){
+                        pIndex = j;
+                        usrMax = user.partidasfacil[j].puntaje;
+                }
+        }
+        aux = user.partidasfacil[pIndex];
+        user.partidasfacil[pIndex] = user.partidasfacil[0];
+        user.partidasfacil[0] = aux;
+
+        usrMax = 0;
+
+        for (int j=0;j<user.tlmedio;j++){
+                if (user.partidasmedio[j].puntaje > usrMax){
+                        pIndex = j;
+                        usrMax = user.partidasmedio[j].puntaje;
+                }
+        }
+        aux = user.partidasmedio[pIndex];
+        user.partidasmedio[pIndex] = user.partidasmedio[0];
+        user.partidasmedio[0] = aux;
 
 
+        usrMax = 0;
+        
+        for (int j=0;j<user.tldificil;j++){
+                if (user.partidasdificil[j].puntaje > usrMax){
+                        pIndex = j;
+                        usrMax = user.partidasdificil[j].puntaje;
+                }
+        }
+        aux = user.partidasdificil[pIndex];
+        user.partidasdificil[pIndex] = user.partidasdificil[0];
+        user.partidasdificil[0] = aux;
+}
 
-
-
-
-
-
-
-
+void strFecha(char fecha[11], Partida part){
+        char dia[3],mes[3],anio[5], fch[];
+        sprintf(dia, "%d", part.fecha->dia);
+        sprintf(mes, "%d", part.fecha->mes);
+        sprintf(mes, "%d", part.fecha->anyo);
+        fecha[0] = '\0';
+        strcat(fecha, dia);strcat(fecha, "/");strcat(fecha, mes);strcat(fecha, "/");strcat(fecha, anyo);
+}        
 
 int main(){
-
-
-
+        Puntaje(3);
+        strcat();
 }
+
