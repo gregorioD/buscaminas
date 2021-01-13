@@ -194,7 +194,7 @@ int menuUsuarios(){
 			devolver = -1;
 			break;
 	}
-	
+	OrdenarUsuarios(&database);
 	guardarDB(&database);
 	return devolver;
 }

@@ -8,10 +8,6 @@
 #include <iomanip>
 //#include <conio.h>
 
-
-
-
-
 using namespace std;
 // Para guardar datos de partidas:
 // se guarda una partida(inicializa), se ejecuta partidaAUsuario para cargar los datos y
@@ -29,7 +25,7 @@ void crearBaseDeDatos(PDB database){
 void crearUsuario(PDB database){
 	int cont = 0, QUsuarios = database -> cantidad_usuarios;
 	Usuario user;
-	PUsuario Puser = &user;
+	// PUsuario Puser = &user;
 	char nombre[11], n[11], contrasena[13];
 	bool correcto = false, tamanoCorrecto = false, esAlNum = true, esUnic = true;
 	if (QUsuarios < 100){
@@ -40,18 +36,18 @@ void crearUsuario(PDB database){
 			fgets(nombre, 11, stdin);
             cin.ignore(1000, '\n');
             //borrar
-            cout<<"nombre: "<<nombre<<endl;
+            // cout<<"nombre: "<<nombre<<endl;
 			if(strlen(nombre)>7 && strlen(nombre) <11){
 				tamanoCorrecto = true;
 			}
             //borrar
-            cout<<strlen(nombre)<<endl;
+            // cout<<strlen(nombre)<<endl;
 			while(esAlNum && cont<strlen(nombre)-1){
 				if(!isalnum(nombre[cont])) esAlNum = false;
 				else cont++;
 			}
             //borrar
-            if(esAlNum) cout<<"si"<<endl;
+            // if(esAlNum) cout<<"si"<<endl;
 			cont = 0;
 			if(QUsuarios > 0){
 				while(esUnic && cont < QUsuarios){
@@ -62,16 +58,13 @@ void crearUsuario(PDB database){
 				cont = 0;
 			}
             //borrar
-            if (esUnic) cout<<"si"<<endl;
+            // if (esUnic) cout<<"si"<<endl;
 			if (tamanoCorrecto && esAlNum && esUnic){
 				correcto = true;
 			}else{
 				cout<<"Nombre invalido. Por favor, intente otra vez."<<endl;
 			}
 		}
-		
-    
-    
     cout <<"Su nombre es: "<<nombre<<endl;
 		strcpy(user.nombre, nombre);
 		correcto = false;
@@ -85,7 +78,7 @@ void crearUsuario(PDB database){
 			if (strlen(contrasena) > 0 && strlen(contrasena)<13){
 				tamanoCorrecto = true;
 			}
-			while(esAlNum && cont<strlen(contrasena)){
+			while(esAlNum && cont<strlen(contrasena)-1){
 				if(!isalnum(contrasena[cont])) esAlNum = false;
 				else cont++;
 			}
@@ -94,7 +87,7 @@ void crearUsuario(PDB database){
 				cout<<"Su contrasena es: "<<contrasena<<endl;
 				strcpy(user.contrasena, contrasena);
 			}else{
-				cout<<"Contraasena invalida, por favor, trate otra vez."<<endl;
+				cout<<"Contrasena invalida, por favor, trate otra vez."<<endl;
 			}
 		}
 		user.perdidas = 0;
@@ -263,7 +256,7 @@ void guardarDB(PDB database){
 // busca un usuario por su nombre y contrasenia
 Usuario AbrirUsuario (PDB database, bool &sale){
 	Usuario user;
-	int QU = database -> cantidad_usuarios, cont = 0, i = 0, longitud;
+	int QU = database -> cantidad_usuarios, cont = 0, i = 0;
 	char nombre[11], n[11], pwrd[13], p[13];
 	bool encontrado = false, coincide = false;
 	while((!encontrado || !coincide) && i<3){
@@ -423,6 +416,7 @@ void mostrarPTO(PDB database, int opcion){
 				cout<<"| 2     | "<<"========== | ==="<<endl;
 				cout<<"| 3     | "<<"========== | ==="<<endl;
 			}
+			system("pause");
 			break;
 
 			case 2:
@@ -575,7 +569,26 @@ void encriptar(PUsuario user, bool encriptar){
 		}
 	}
 }
-
+// Antes de ejecutarla chequear que cantidad_usuarios > 0
+void OrdenarUsuarios (PDB database){
+	Usuario aux;
+	int cont = 0, mayor = 0;
+	double maximo = database -> usuarios[0].ganadas;
+	if (database -> cantidad_usuarios > 0){
+		while (cont < database -> cantidad_usuarios){
+			for (int i = cont; i<database -> cantidad_usuarios; i++){
+				if (database -> usuarios[i].ganadas > maximo){
+					mayor = i;
+					maximo = database -> usuarios[i].ganadas;
+				}
+			}
+			aux = database -> usuarios[0];
+			database -> usuarios[0] = database -> usuarios[mayor];
+			database -> usuarios[mayor] = aux;
+			cont ++;
+		}
+	}
+}
 
 
 
