@@ -51,3 +51,4 @@ Usuario AbrirUsuario (PDB database, bool &sale);
 DB AbrirBaseDeDatos();
 void mostrarPTO(PDB database, int opcion);
 int mejorPartida(PUsuario usr, int dif);
+void OrdenarUsuarios (PDB database);
