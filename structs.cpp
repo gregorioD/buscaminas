@@ -535,18 +535,20 @@ void Puntaje(int opcion){
 // Antes de ejecutarla chequear que cantidad_usuarios > 0
 void OrdenarUsuarios (PDB database){
 	Usuario aux;
-	int cont = 0, mayor = 0;
-	double maximo = database -> usuarios[0].ganadas;
+	int cont = 0, mayor;
+	double maximo;
 	if (database -> cantidad_usuarios > 0){
 		while (cont < database -> cantidad_usuarios){
+			mayor = cont;
+			maximo = = database -> usuarios[0].ganadas;
 			for (int i = cont; i<database -> cantidad_usuarios; i++){
 				if (database -> usuarios[i].ganadas > maximo){
 					mayor = i;
 					maximo = database -> usuarios[i].ganadas;
 				}
 			}
-			aux = database -> usuarios[0];
-			database -> usuarios[0] = database -> usuarios[mayor];
+			aux = database -> usuarios[cont];
+			database -> usuarios[cont] = database -> usuarios[mayor];
 			database -> usuarios[mayor] = aux;
 			cont ++;
 		}
