@@ -285,7 +285,7 @@ Usuario AbrirUsuario (PDB database, bool &sale){
 			}
 		}
 		while(!coincide && i<3){
-            Puser = &(database -> usuarios[cont];
+            Puser = &(database -> usuarios[cont]);
             encriptar(Puser, false);
 			strcpy(p, (database -> usuarios[cont].contrasena));
             encriptar(Puser, true);
@@ -483,6 +483,7 @@ void Puntaje(int opcion, PDB db){
                                 // Imprimir porcentajes
                                 while (flag2 && linea<maxLineas){
                                         DibujarCuad(db->usuarios[db->ranking[x]].nombre, an1);
+                                        cout<<endl<<db->usuarios[db->ranking[x]].nombre<<"nari"<<endl;
                                         // toma el indice x almacenado en el ranking para utilizarlo en el arreglo
                                         // de usuarios y mostrarlos de mayor a menor % de ganadas
         

@@ -55,6 +55,6 @@ void ordenarPartidas(Usuario user, int dificultad);
 void strFecha(char fecha[11], Pfecha fech);
 void DibujarCuad(char *str, int ancho, char separador='|');
 void Puntaje(int opcion, PDB);
-
+void encriptar(PUsuario user, bool encriptar);
 
 
