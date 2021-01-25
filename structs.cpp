@@ -271,7 +271,8 @@ void guardarDB(PDB database){
 Usuario AbrirUsuario (PDB database, bool &sale){
 	Usuario user;
     PUsuario Puser;
-	int QU = database -> cantidad_usuarios, cont, i = 0;
+
+	int QU = database -> cantidad_usuarios, cont = 0, i = 0;
 	char nombre[11], n[11], pwrd[13], p[13];
 	bool encontrado = false, coincide = false;
 	while((!encontrado || !coincide) && i<3){
@@ -355,15 +356,13 @@ int calculoPTO(int tiempo){
 	return ret;
 }
 
-
-
 // encriptar = true: encripta, sino desencripta
 void encriptar(PUsuario user, bool encriptar){
 	char referencia[68]= {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', (char)164, 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '$', '#', '%', '&', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', (char)165, 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 	int pos, j=0;
 	bool encontro=false;
 	if(encriptar){
-		for (int i=0;i<strlen(user->contrasena)-1;i++){
+		for (int i=0;i<strlen(user->contrasena);i++){
 			while (j<68 && !encontro){
 				if (user->contrasena[i]==referencia[j]){
 					pos = j;
@@ -376,7 +375,7 @@ void encriptar(PUsuario user, bool encriptar){
 			user->contrasena[i] = referencia[(pos+7)%68];
 		}
 	}else{
-		for (int i=0;i<strlen(user->contrasena)-1;i++){
+		for (int i=0;i<strlen(user->contrasena);i++){
 			while (j<68 && !encontro){
 				if (user->contrasena[i]==referencia[j]){
 					pos = j;
@@ -736,3 +735,4 @@ void crearPartidasArtificial (PUsuario user){
 }
 
 */
+

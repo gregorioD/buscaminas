@@ -58,3 +58,4 @@ void Puntaje(int opcion, PDB);
 void encriptar(PUsuario user, bool encriptar);
 void crearPartidasArtificial (PUsuario user);
 
+
