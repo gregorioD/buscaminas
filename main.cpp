@@ -75,13 +75,13 @@ int menuUsuarios(){
 	QUsuarios = database.cantidad_usuarios;
 	
 
-  
+	
   
   
 	database = AbrirBaseDeDatos();
 	
 	QUsuarios = database.cantidad_usuarios;
-
+	
 	while(no_termino){
 			system("CLS");
 		if (QUsuarios < 100 && QUsuarios > 0){
@@ -141,6 +141,9 @@ int menuUsuarios(){
 	switch(dev){
 		case 1:
 			user = AbrirUsuario(&database, sale);
+			/*
+			crearPartidasArtificial(&user);
+			*/
 			if (!sale){
 				do {
 					system("CLS");

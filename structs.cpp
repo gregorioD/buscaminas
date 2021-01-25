@@ -63,6 +63,9 @@ void crearUsuario(PDB database){
 				correcto = true;
 			}else{
 				cout<<"Nombre invalido. Por favor, intente otra vez."<<endl;
+				tamanoCorrecto = false;
+				esAlNum = true;
+				esUnic = true;
 			}
 		}
     cout <<"Su nombre es: "<<nombre<<endl;
@@ -72,6 +75,7 @@ void crearUsuario(PDB database){
 		esAlNum = true;
 		cout<<"Ingrese su contrasena: ";
 		while (!correcto){
+			cont = 0;
 			cin >> ws;
 			fgets(contrasena, 13, stdin);
             cin.ignore(1000, '\n');
@@ -88,6 +92,9 @@ void crearUsuario(PDB database){
 				strcpy(user.contrasena, contrasena);
 			}else{
 				cout<<"Contrasena invalida, por favor, trate otra vez."<<endl;
+				correcto = false;
+				tamanoCorrecto = false;
+				esAlNum = true;
 			}
 		}
 		user.perdidas = 0;
@@ -264,11 +271,13 @@ void guardarDB(PDB database){
 Usuario AbrirUsuario (PDB database, bool &sale){
 	Usuario user;
     PUsuario Puser;
+
 	int QU = database -> cantidad_usuarios, cont = 0, i = 0;
 	char nombre[11], n[11], pwrd[13], p[13];
 	bool encontrado = false, coincide = false;
 	while((!encontrado || !coincide) && i<3){
 		while(!encontrado && i<3){
+			cont = 0;
 			cin.ignore(1000, '\n');
 			cout<<"Ingrese nombre de usuario: ";
 			cin >> ws;
@@ -347,8 +356,6 @@ int calculoPTO(int tiempo){
 	return ret;
 }
 
-
-
 // encriptar = true: encripta, sino desencripta
 void encriptar(PUsuario user, bool encriptar){
 	char referencia[68]= {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', (char)164, 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '$', '#', '%', '&', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', (char)165, 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
@@ -387,7 +394,7 @@ void encriptar(PUsuario user, bool encriptar){
 	}
 }
 
-void DibujarCuad(char *str, int ancho, char separador){
+void DibujarCuad(const char *str, int ancho, char separador){
         // Imprime una string agrega separadores y determina
         // el tamano del cuadrado con ancho 
         cout<<separador<<' '<<str;
@@ -702,4 +709,30 @@ void strFecha(char fecha[11], Pfecha fech){
         fecha[0] = '\0';
         strcat(fecha, dia);strcat(fecha, "/");strcat(fecha, mes);strcat(fecha, "/");strcat(fecha, anio);
 }
+		
+/*		
+void crearPartidasArtificial (PUsuario user){
+	Partida match;
+	PPartida Pmatch = &match;
+	int a, b;
+	char c;
+	
+	for (int j = 0; j<10; j++){
+		a = 1 + rand()% 3;
+		b = rand() % 60000;
+		if ((a + b)%3==0){
+			c = 'G';
+		}else{
+			if ((a+b)%3==1){
+				c = 'P';
+			}else{
+				c = 'A';
+			}
+		}
+		GuardarPartida(Pmatch, a, b, c);
+		partidaAUsuario (Pmatch, user);
+	}
+}
+
+*/
 

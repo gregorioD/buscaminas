@@ -53,8 +53,9 @@ void OrdenarUsuarios (PDB database);
 void mejorXNiv(PDB db);
 void ordenarPartidas(Usuario user, int dificultad);
 void strFecha(char fecha[11], Pfecha fech);
-void DibujarCuad(char *str, int ancho, char separador='|');
+void DibujarCuad(const char *str, int ancho, char separador='|');
 void Puntaje(int opcion, PDB);
 void encriptar(PUsuario user, bool encriptar);
+void crearPartidasArtificial (PUsuario user);
 
 
