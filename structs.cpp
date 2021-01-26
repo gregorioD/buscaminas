@@ -121,9 +121,9 @@ void GuardarPartida (PPartida match, int dif, int score, char tipo){
 	// y despues le asigna al puntero de fecha de la partida el valor de memoria
 	// de la nueva fecha uwu
 	Fecha date;
-	Pfecha punterodate = &date;
-	obtenerFecha(punterodate);      // aca puede ser el error porque no opera sobre el objeto en la direccion de la fecha de la partida sino que se le asigna la dir de punterodate a fecha
-	match -> fecha = punterodate;
+	obtenerFecha(&date); 
+    match -> fecha = date;
+    cout<<"Guard Part: "<<match -> fecha.dia<<"/"<<match -> fecha.mes<<"/"<<match -> fecha.anyo<<endl;
 	match -> dificultad = dif;
 	match -> puntaje = score;
 	match -> tipo = tipo;
@@ -140,18 +140,19 @@ void obtenerFecha(Pfecha date){
 	dig0 = (int)fecha[8] - 48;
 	dig1 = (int)fecha[9] -48;
 	dia = dig0 * 10 + dig1;
-	date -> dia = dia;
+	date->dia = dia;
 	for (int i = 0; i<3; i++){
 		nombreMes[i] = fecha[i+4];
 	}
 	mes = QueMesEs(nombreMes);
-	date -> mes = mes;
+	date->mes = mes;
 	dig0 = (int)fecha[20] - 48;
 	dig1 = (int)fecha[21] -48;
 	dig2 = (int)fecha[22] -48;
 	dig3 = (int)fecha[23] -48;
 	anio = dig0 * 1000 + dig1 * 100 + dig2 * 10 + dig3;
-	date -> anyo = anio;
+	date->anyo = anio;
+    cout<<"Ob fech: "<<date->dia<<"/"<<date->mes<<"/"<<date->anyo<<endl;
 }
 	
 int QueMesEs(char mes[3]){
@@ -549,7 +550,6 @@ void Puntaje(int opcion, PDB db){
                                 x = pos;
                                 flag2 = true;
                                 while(flag2 && linea<(maxLineas/3)){
-                                        cout<<db->usuarios[x].partidasfacil[0].fecha->dia<<endl; //borrar
                                         if (db->usuarios[x].tlfacil > 0){ // solo si el usuario tiene partidas
                                                 strFecha(fecha, db->usuarios[x].partidasfacil[0].fecha);
                                                 sprintf(buffer, "%d", db->usuarios[x].partidasfacil[0].puntaje);
@@ -703,11 +703,11 @@ void ordenarPartidas(Usuario user, int dificultad){
         user.partidasdificil[0] = aux;
 }
 
-void strFecha(char fecha[11], const Pfecha fech){
+void strFecha(char fecha[11], Fecha fech){
         char dia[3],mes[3],anio[5];
-        sprintf(dia, "%d", fech->dia);
-        sprintf(mes, "%d", fech->mes);
-        sprintf(anio, "%d", fech->anyo);
+        sprintf(dia, "%d", fech.dia);
+        sprintf(mes, "%d", fech.mes);
+        sprintf(anio, "%d", fech.anyo);
         fecha[0] = '\0';
         strcat(fecha, dia);
         strcat(fecha, "/");

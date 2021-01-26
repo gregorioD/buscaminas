@@ -10,7 +10,7 @@ struct Partida{
 	
 	int dificultad, puntaje;
 	char tipo;
-	Pfecha fecha;
+	Fecha fecha;
 };
 
 typedef struct Partida* PPartida;
@@ -52,7 +52,7 @@ DB AbrirBaseDeDatos();
 void OrdenarUsuarios (PDB database);
 void mejorXNiv(PDB db);
 void ordenarPartidas(Usuario user, int dificultad);
-void strFecha(char fecha[11], Pfecha fech);
+void strFecha(char fecha[11], Fecha fech);
 void DibujarCuad(const char *str, int ancho, char separador='|');
 void Puntaje(int opcion, PDB);
 void encriptar(PUsuario user, bool encriptar);

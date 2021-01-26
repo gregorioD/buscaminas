@@ -43,6 +43,7 @@ void crearPartidasArtificial (PUsuario user){
 			}
 		}
 		GuardarPartida(Pmatch, a, b, c);
+        cout<<Pmatch->fecha.dia<<"/"<<Pmatch->fecha.mes<<"/"<<Pmatch->fecha.anyo<<endl;
 		partidaAUsuario (Pmatch, user);
 	}
 }
