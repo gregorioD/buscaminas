@@ -57,5 +57,5 @@ void DibujarCuad(const char *str, int ancho, char separador='|');
 void Puntaje(int opcion, PDB);
 void encriptar(PUsuario user, bool encriptar);
 void crearPartidasArtificial (PUsuario user);
-
+void crearUsuariosArt(PDB db, int cantidad);
 

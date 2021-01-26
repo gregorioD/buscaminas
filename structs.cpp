@@ -33,7 +33,7 @@ void crearUsuario(PDB database){
 		
 		while(!correcto){
 			cin >> ws;
-			fgets(nombre, 11, stdin);
+			gets(nombre);
             cin.ignore(1000, '\n');
             //borrar
             // cout<<"nombre: "<<nombre<<endl;
@@ -77,7 +77,7 @@ void crearUsuario(PDB database){
 		while (!correcto){
 			cont = 0;
 			cin >> ws;
-			fgets(contrasena, 13, stdin);
+			gets(contrasena);
             cin.ignore(1000, '\n');
 			if (strlen(contrasena) > 0 && strlen(contrasena)<13){
 				tamanoCorrecto = true;
@@ -122,7 +122,7 @@ void GuardarPartida (PPartida match, int dif, int score, char tipo){
 	// de la nueva fecha uwu
 	Fecha date;
 	Pfecha punterodate = &date;
-	obtenerFecha(punterodate);
+	obtenerFecha(punterodate);      // aca puede ser el error porque no opera sobre el objeto en la direccion de la fecha de la partida sino que se le asigna la dir de punterodate a fecha
 	match -> fecha = punterodate;
 	match -> dificultad = dif;
 	match -> puntaje = score;
@@ -281,7 +281,7 @@ Usuario AbrirUsuario (PDB database, bool &sale){
 			cin.ignore(1000, '\n');
 			cout<<"Ingrese nombre de usuario: ";
 			cin >> ws;
-			fgets(nombre, 11, stdin);
+			gets(nombre);
             cin.ignore(1000, '\n');
 			while(!encontrado && cont < QU){
 				strcpy(n, (database->usuarios[cont].nombre));
@@ -300,7 +300,7 @@ Usuario AbrirUsuario (PDB database, bool &sale){
             encriptar(Puser, true);
 			cout<<"Ingrese su contrasena: ";
 			cin>>ws;
-			fgets(pwrd, 13, stdin);
+			gets(pwrd);
             cin.ignore(1000, '\n');
 			if (strcmp(pwrd, p)==0) coincide = true;
 			else{
@@ -330,6 +330,7 @@ DB AbrirBaseDeDatos(){
 		if (archivo.eof()){
 			crearBaseDeDatos(aux);
 			database = *aux;
+            cout<<"creando base de datos 1"<<endl; //borrar
 		}
 		archivo.close();
 		
@@ -344,6 +345,8 @@ DB AbrirBaseDeDatos(){
 		database = *aux;
 		arch.close();
 		//puts("Error al abrir el archivo.(Abrir base de datos)");
+        cout<<"creando base de datos 2"<<endl; //borrar
+
 	}
 	return database;
 }
@@ -490,7 +493,6 @@ void Puntaje(int opcion, PDB db){
                                 // Imprimir porcentajes
                                 while (flag2 && linea<maxLineas){
                                         DibujarCuad(db->usuarios[db->ranking[x]].nombre, an1);
-                                        cout<<endl<<db->usuarios[db->ranking[x]].nombre<<"nari"<<endl;
                                         // toma el indice x almacenado en el ranking para utilizarlo en el arreglo
                                         // de usuarios y mostrarlos de mayor a menor % de ganadas
         
@@ -547,7 +549,7 @@ void Puntaje(int opcion, PDB db){
                                 x = pos;
                                 flag2 = true;
                                 while(flag2 && linea<(maxLineas/3)){
-
+                                        cout<<db->usuarios[x].partidasfacil[0].fecha->dia<<endl; //borrar
                                         if (db->usuarios[x].tlfacil > 0){ // solo si el usuario tiene partidas
                                                 strFecha(fecha, db->usuarios[x].partidasfacil[0].fecha);
                                                 sprintf(buffer, "%d", db->usuarios[x].partidasfacil[0].puntaje);
@@ -701,38 +703,19 @@ void ordenarPartidas(Usuario user, int dificultad){
         user.partidasdificil[0] = aux;
 }
 
-void strFecha(char fecha[11], Pfecha fech){
+void strFecha(char fecha[11], const Pfecha fech){
         char dia[3],mes[3],anio[5];
         sprintf(dia, "%d", fech->dia);
         sprintf(mes, "%d", fech->mes);
-        sprintf(mes, "%d", fech->anyo);
+        sprintf(anio, "%d", fech->anyo);
         fecha[0] = '\0';
-        strcat(fecha, dia);strcat(fecha, "/");strcat(fecha, mes);strcat(fecha, "/");strcat(fecha, anio);
+        strcat(fecha, dia);
+        strcat(fecha, "/");
+        strcat(fecha, mes);
+        strcat(fecha, "/");
+        strcat(fecha, anio);
 }
 		
-/*		
-void crearPartidasArtificial (PUsuario user){
-	Partida match;
-	PPartida Pmatch = &match;
-	int a, b;
-	char c;
-	
-	for (int j = 0; j<10; j++){
-		a = 1 + rand()% 3;
-		b = rand() % 60000;
-		if ((a + b)%3==0){
-			c = 'G';
-		}else{
-			if ((a+b)%3==1){
-				c = 'P';
-			}else{
-				c = 'A';
-			}
-		}
-		GuardarPartida(Pmatch, a, b, c);
-		partidaAUsuario (Pmatch, user);
-	}
-}
 
-*/
+
 
