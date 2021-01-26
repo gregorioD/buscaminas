@@ -8,10 +8,13 @@ using namespace std;
 
 int main(){
         DB db = AbrirBaseDeDatos();
-
+        for (int i=0;i<100;i++){
+                db.ranking[i]=i;
+        }
+        for (int j=0;j<100;j++){
+                cout<<j<<endl;}
         
         crearUsuariosArt(&db, 15);
-        cout<<"cant users: "<<db.cantidad_usuarios<<endl;
         for (int i=0;i<db.cantidad_usuarios;i++){
                 crearPartidasArtificial(&(db.usuarios[i])); //crea un set de partidas para cada user
                 ordenarPartidas(db.usuarios[i], 1);
@@ -22,6 +25,7 @@ int main(){
         mejorXNiv(&db);             // actualiza el ranking 
         OrdenarUsuarios(&db);
         guardarDB(&db);
+
         
 }
 void crearPartidasArtificial (PUsuario user){
@@ -29,7 +33,6 @@ void crearPartidasArtificial (PUsuario user){
 	PPartida Pmatch = &match;
 	int a, b;
 	char c;
-	cout<<"Entrando a crearPartidas"<<endl;
 	for (int j = 0; j<30; j++){
 		a = 1 + rand()% 3;
 		b = rand() % 60000;
@@ -43,7 +46,6 @@ void crearPartidasArtificial (PUsuario user){
 			}
 		}
 		GuardarPartida(Pmatch, a, b, c);
-        cout<<Pmatch->fecha.dia<<"/"<<Pmatch->fecha.mes<<"/"<<Pmatch->fecha.anyo<<endl;
 		partidaAUsuario (Pmatch, user);
 	}
 }
@@ -51,7 +53,6 @@ void crearPartidasArtificial (PUsuario user){
 void crearUsuariosArt(PDB db, int cantidad){     // debe usarse en una base de datos vacia unicamente
         Usuario user;
         char numeroU[3] = "aa", n[11]="usuario";
-        cout<<"Comienzo funcion usuarios"<<endl;
         for (int i=0;i<cantidad;i++){
                 strcpy(n, "usuario");
                 sprintf(numeroU, "%d", i);
@@ -61,13 +62,14 @@ void crearUsuariosArt(PDB db, int cantidad){     // debe usarse en una base de d
                 user.perdidas = 0;
 		        user.ganadas = 0;
 		        user.abandonos = 0;
+                user.gan = 0;
+                user.perd = 0;
+                user.ab = 0;
 		        user.tlfacil = 0;
 		        user.tlmedio = 0;
 		        user.tldificil = 0;
 		        encriptar(&user, true);
 		        db->usuarios[i] = user;
 		        db->cantidad_usuarios++;
-                cout<<"Usuario creado: "<<user.nombre<<endl;
-                cout<<"DB can users: "<<db->cantidad_usuarios<<endl;
         }
 }        

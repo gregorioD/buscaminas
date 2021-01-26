@@ -123,7 +123,6 @@ void GuardarPartida (PPartida match, int dif, int score, char tipo){
 	Fecha date;
 	obtenerFecha(&date); 
     match -> fecha = date;
-    cout<<"Guard Part: "<<match -> fecha.dia<<"/"<<match -> fecha.mes<<"/"<<match -> fecha.anyo<<endl;
 	match -> dificultad = dif;
 	match -> puntaje = score;
 	match -> tipo = tipo;
@@ -152,7 +151,6 @@ void obtenerFecha(Pfecha date){
 	dig3 = (int)fecha[23] -48;
 	anio = dig0 * 1000 + dig1 * 100 + dig2 * 10 + dig3;
 	date->anyo = anio;
-    cout<<"Ob fech: "<<date->dia<<"/"<<date->mes<<"/"<<date->anyo<<endl;
 }
 	
 int QueMesEs(char mes[3]){
@@ -206,7 +204,8 @@ void partidaAUsuario(PPartida match, PUsuario usr){
 		usr -> ganadas = usr -> gan * 100.0 / total;	
 		usr -> perdidas = usr -> perd * 100.0 / total;
 		usr -> abandonos = usr -> ab * 100.0 / total;
-		
+			
+        cout<<usr->ganadas<<" "<<usr->perdidas<<" "<<usr->abandonos<<endl;
 
 		// guardado de partida
 		int menor_punt = 10000000, pos=-1;
