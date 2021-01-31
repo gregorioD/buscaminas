@@ -33,7 +33,7 @@ void crearUsuario(PDB database){
 		
 		while(!correcto){
 			cin >> ws;
-			fgets(nombre, 11, stdin);
+			gets(nombre);
             cin.ignore(1000, '\n');
             //borrar
             // cout<<"nombre: "<<nombre<<endl;
@@ -77,7 +77,7 @@ void crearUsuario(PDB database){
 		while (!correcto){
 			cont = 0;
 			cin >> ws;
-			fgets(contrasena, 13, stdin);
+			gets(contrasena);
             cin.ignore(1000, '\n');
 			if (strlen(contrasena) > 0 && strlen(contrasena)<13){
 				tamanoCorrecto = true;
@@ -121,9 +121,8 @@ void GuardarPartida (PPartida match, int dif, int score, char tipo){
 	// y despues le asigna al puntero de fecha de la partida el valor de memoria
 	// de la nueva fecha uwu
 	Fecha date;
-	Pfecha punterodate = &date;
-	obtenerFecha(punterodate);
-	match -> fecha = punterodate;
+	obtenerFecha(&date); 
+    match -> fecha = date;
 	match -> dificultad = dif;
 	match -> puntaje = score;
 	match -> tipo = tipo;
@@ -140,18 +139,18 @@ void obtenerFecha(Pfecha date){
 	dig0 = (int)fecha[8] - 48;
 	dig1 = (int)fecha[9] -48;
 	dia = dig0 * 10 + dig1;
-	date -> dia = dia;
+	date->dia = dia;
 	for (int i = 0; i<3; i++){
 		nombreMes[i] = fecha[i+4];
 	}
 	mes = QueMesEs(nombreMes);
-	date -> mes = mes;
+	date->mes = mes;
 	dig0 = (int)fecha[20] - 48;
 	dig1 = (int)fecha[21] -48;
 	dig2 = (int)fecha[22] -48;
 	dig3 = (int)fecha[23] -48;
 	anio = dig0 * 1000 + dig1 * 100 + dig2 * 10 + dig3;
-	date -> anyo = anio;
+	date->anyo = anio;
 }
 	
 int QueMesEs(char mes[3]){
@@ -205,7 +204,8 @@ void partidaAUsuario(PPartida match, PUsuario usr){
 		usr -> ganadas = usr -> gan * 100.0 / total;	
 		usr -> perdidas = usr -> perd * 100.0 / total;
 		usr -> abandonos = usr -> ab * 100.0 / total;
-		
+			
+        cout<<usr->ganadas<<" "<<usr->perdidas<<" "<<usr->abandonos<<endl;
 
 		// guardado de partida
 		int menor_punt = 10000000, pos=-1;
@@ -281,7 +281,7 @@ Usuario AbrirUsuario (PDB database, bool &sale){
 			cin.ignore(1000, '\n');
 			cout<<"Ingrese nombre de usuario: ";
 			cin >> ws;
-			fgets(nombre, 11, stdin);
+			gets(nombre);
             cin.ignore(1000, '\n');
 			while(!encontrado && cont < QU){
 				strcpy(n, (database->usuarios[cont].nombre));
@@ -300,7 +300,7 @@ Usuario AbrirUsuario (PDB database, bool &sale){
             encriptar(Puser, true);
 			cout<<"Ingrese su contrasena: ";
 			cin>>ws;
-			fgets(pwrd, 13, stdin);
+			gets(pwrd);
             cin.ignore(1000, '\n');
 			if (strcmp(pwrd, p)==0) coincide = true;
 			else{
@@ -330,6 +330,7 @@ DB AbrirBaseDeDatos(){
 		if (archivo.eof()){
 			crearBaseDeDatos(aux);
 			database = *aux;
+            cout<<"creando base de datos 1"<<endl; //borrar
 		}
 		archivo.close();
 		
@@ -344,6 +345,8 @@ DB AbrirBaseDeDatos(){
 		database = *aux;
 		arch.close();
 		//puts("Error al abrir el archivo.(Abrir base de datos)");
+        cout<<"creando base de datos 2"<<endl; //borrar
+
 	}
 	return database;
 }
@@ -489,20 +492,19 @@ void Puntaje(int opcion, PDB db){
                                 flag2 = true; // para subir luego de llegar al ultimo elemento
                                 // Imprimir porcentajes
                                 while (flag2 && linea<maxLineas){
-                                        DibujarCuad(db->usuarios[db->ranking[x]].nombre, an1);
-                                        cout<<endl<<db->usuarios[db->ranking[x]].nombre<<"nari"<<endl;
+                                        DibujarCuad(db->usuarios[x].nombre, an1);
                                         // toma el indice x almacenado en el ranking para utilizarlo en el arreglo
                                         // de usuarios y mostrarlos de mayor a menor % de ganadas
         
-                                        sprintf(buffer, "%.1f", db->usuarios[db->ranking[x]].ganadas);
+                                        sprintf(buffer, "%.1f", db->usuarios[x].ganadas);
                                         DibujarCuad(buffer, an2);
                                         buffer[0] = '\0';
         
-                                        sprintf(buffer, "%.1f", db->usuarios[db->ranking[x]].perdidas);
+                                        sprintf(buffer, "%.1f", db->usuarios[x].perdidas);
                                         DibujarCuad(buffer, an3);
                                         buffer[0] = '\0';
         
-                                        sprintf(buffer, "%.1f", db->usuarios[db->ranking[x]].abandonos);
+                                        sprintf(buffer, "%.1f", db->usuarios[x].abandonos);
                                         DibujarCuad(buffer, an4);
                                         buffer[0] = '\0';
         
@@ -547,7 +549,6 @@ void Puntaje(int opcion, PDB db){
                                 x = pos;
                                 flag2 = true;
                                 while(flag2 && linea<(maxLineas/3)){
-
                                         if (db->usuarios[x].tlfacil > 0){ // solo si el usuario tiene partidas
                                                 strFecha(fecha, db->usuarios[x].partidasfacil[0].fecha);
                                                 sprintf(buffer, "%d", db->usuarios[x].partidasfacil[0].puntaje);
@@ -608,6 +609,7 @@ void Puntaje(int opcion, PDB db){
 } 
                         
 // Antes de ejecutarla chequear que cantidad_usuarios > 0
+		/*
 void OrdenarUsuarios (PDB database){
 	Usuario aux;
 	int cont = 0, mayor;
@@ -615,11 +617,11 @@ void OrdenarUsuarios (PDB database){
 	if (database -> cantidad_usuarios > 0){
 		while (cont < database -> cantidad_usuarios){
 			mayor = cont;
-			maximo = database -> usuarios[0].ganadas;
+			maximo = database -> usuarios[mayor].ganadas;
 			for (int i = cont; i<database -> cantidad_usuarios; i++){
 				if (database -> usuarios[i].ganadas > maximo){
 					mayor = i;
-					maximo = database -> usuarios[i].ganadas;
+					maximo = database -> usuarios[mayor].ganadas;
 				}
 			}
 			aux = database -> usuarios[cont];
@@ -629,7 +631,27 @@ void OrdenarUsuarios (PDB database){
 		}
 	}
 }
-
+		*/
+	void OrdenarUsuarios (PDB database){
+		Usuario aux;
+		int mayor, contador = 0;
+		double maximo;
+		if (database -> cantidad_usuarios > 0){
+			for (int i = 0; i < (database -> cantidad_usuarios - 1); i++){
+				mayor = i;
+				maximo = database -> usuarios[mayor].ganadas;
+				for (int j = i; j < database -> cantidad_usuarios; j++){
+					if (database -> usuarios[j].ganadas > maximo){
+						mayor = j;
+						maximo = database -> usuarios[mayor].ganadas;
+					}
+				}
+				aux = database -> usuarios[i];
+				database -> usuarios[i] = database -> usuarios[mayor];
+				database -> usuarios[mayor] = aux;
+			}
+		}
+	}
 
 void mejorXNiv(PDB db){// setea los valores de mejores puntajes en db
         int mejPuntaje = 0, indice = -1;
@@ -701,38 +723,19 @@ void ordenarPartidas(Usuario user, int dificultad){
         user.partidasdificil[0] = aux;
 }
 
-void strFecha(char fecha[11], Pfecha fech){
+void strFecha(char fecha[11], Fecha fech){
         char dia[3],mes[3],anio[5];
-        sprintf(dia, "%d", fech->dia);
-        sprintf(mes, "%d", fech->mes);
-        sprintf(mes, "%d", fech->anyo);
+        sprintf(dia, "%d", fech.dia);
+        sprintf(mes, "%d", fech.mes);
+        sprintf(anio, "%d", fech.anyo);
         fecha[0] = '\0';
-        strcat(fecha, dia);strcat(fecha, "/");strcat(fecha, mes);strcat(fecha, "/");strcat(fecha, anio);
+        strcat(fecha, dia);
+        strcat(fecha, "/");
+        strcat(fecha, mes);
+        strcat(fecha, "/");
+        strcat(fecha, anio);
 }
 		
-/*		
-void crearPartidasArtificial (PUsuario user){
-	Partida match;
-	PPartida Pmatch = &match;
-	int a, b;
-	char c;
-	
-	for (int j = 0; j<10; j++){
-		a = 1 + rand()% 3;
-		b = rand() % 60000;
-		if ((a + b)%3==0){
-			c = 'G';
-		}else{
-			if ((a+b)%3==1){
-				c = 'P';
-			}else{
-				c = 'A';
-			}
-		}
-		GuardarPartida(Pmatch, a, b, c);
-		partidaAUsuario (Pmatch, user);
-	}
-}
 
-*/
+
 
