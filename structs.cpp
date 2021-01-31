@@ -492,19 +492,19 @@ void Puntaje(int opcion, PDB db){
                                 flag2 = true; // para subir luego de llegar al ultimo elemento
                                 // Imprimir porcentajes
                                 while (flag2 && linea<maxLineas){
-                                        DibujarCuad(db->usuarios[db->ranking[x]].nombre, an1);
+                                        DibujarCuad(db->usuarios[x].nombre, an1);
                                         // toma el indice x almacenado en el ranking para utilizarlo en el arreglo
                                         // de usuarios y mostrarlos de mayor a menor % de ganadas
         
-                                        sprintf(buffer, "%.1f", db->usuarios[db->ranking[x]].ganadas);
+                                        sprintf(buffer, "%.1f", db->usuarios[x].ganadas);
                                         DibujarCuad(buffer, an2);
                                         buffer[0] = '\0';
         
-                                        sprintf(buffer, "%.1f", db->usuarios[db->ranking[x]].perdidas);
+                                        sprintf(buffer, "%.1f", db->usuarios[x].perdidas);
                                         DibujarCuad(buffer, an3);
                                         buffer[0] = '\0';
         
-                                        sprintf(buffer, "%.1f", db->usuarios[db->ranking[x]].abandonos);
+                                        sprintf(buffer, "%.1f", db->usuarios[x].abandonos);
                                         DibujarCuad(buffer, an4);
                                         buffer[0] = '\0';
         

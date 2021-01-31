@@ -8,13 +8,7 @@ using namespace std;
 
 int main(){
         DB db = AbrirBaseDeDatos();
-        for (int i=0;i<100;i++){
-                db.ranking[i]=i;
-        }
-        for (int j=0;j<100;j++){
-                cout<<j<<endl;}
-        
-        crearUsuariosArt(&db, 15);
+        crearUsuariosArt(&db, 40);
         for (int i=0;i<db.cantidad_usuarios;i++){
                 crearPartidasArtificial(&(db.usuarios[i])); //crea un set de partidas para cada user
                 ordenarPartidas(db.usuarios[i], 1);
