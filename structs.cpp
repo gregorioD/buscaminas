@@ -30,24 +30,18 @@ void crearUsuario(PDB database){
 	bool correcto = false, tamanoCorrecto = false, esAlNum = true, esUnic = true;
 	if (QUsuarios < 100){
 		cout<<"Ingrese su nombre: ";
-		
 		while(!correcto){
 			cin >> ws;
-			gets(nombre);
+			fgets(nombre, 11, stdin);
+			for (int i=0; i<11; i++) if (nombre[i]=='\n') nombre[i] = '\0';
             cin.ignore(1000, '\n');
-            //borrar
-            // cout<<"nombre: "<<nombre<<endl;
 			if(strlen(nombre)>7 && strlen(nombre) <11){
 				tamanoCorrecto = true;
 			}
-            //borrar
-            // cout<<strlen(nombre)<<endl;
 			while(esAlNum && cont<strlen(nombre)-1){
 				if(!isalnum(nombre[cont])) esAlNum = false;
 				else cont++;
 			}
-            //borrar
-            // if(esAlNum) cout<<"si"<<endl;
 			cont = 0;
 			if(QUsuarios > 0){
 				while(esUnic && cont < QUsuarios){
@@ -57,8 +51,6 @@ void crearUsuario(PDB database){
 				}
 				cont = 0;
 			}
-            //borrar
-            // if (esUnic) cout<<"si"<<endl;
 			if (tamanoCorrecto && esAlNum && esUnic){
 				correcto = true;
 			}else{
@@ -77,7 +69,8 @@ void crearUsuario(PDB database){
 		while (!correcto){
 			cont = 0;
 			cin >> ws;
-			gets(contrasena);
+			fgets(contrasena, 13, stdin);
+			for (int i=0; i<13; i++) if (contrasena[i]=='\n') contrasena[i] = '\0';
             cin.ignore(1000, '\n');
 			if (strlen(contrasena) > 0 && strlen(contrasena)<13){
 				tamanoCorrecto = true;
@@ -97,19 +90,17 @@ void crearUsuario(PDB database){
 				esAlNum = true;
 			}
 		}
+		system("pause");
 		user.perdidas = 0;
 		user.ganadas = 0;
 		user.abandonos = 0;
 		user.tlfacil = 0;
 		user.tlmedio = 0;
 		user.tldificil = 0;
+		user.gan = 0;
+		user.perd = 0;
+		user.ab = 0;
 		encriptar(Puser, true);
-		puts(Puser -> contrasena);
-		encriptar (Puser, false);
-		puts(Puser->contrasena);
-		encriptar (Puser, true);
-		puts(Puser->contrasena);
-		system("pause");
 		database -> usuarios[QUsuarios] = user;
 		database -> cantidad_usuarios++;
 		}
@@ -204,9 +195,6 @@ void partidaAUsuario(PPartida match, PUsuario usr){
 		usr -> ganadas = usr -> gan * 100.0 / total;	
 		usr -> perdidas = usr -> perd * 100.0 / total;
 		usr -> abandonos = usr -> ab * 100.0 / total;
-			
-        cout<<usr->ganadas<<" "<<usr->perdidas<<" "<<usr->abandonos<<endl;
-
 		// guardado de partida
 		int menor_punt = 10000000, pos=-1;
 		if (match -> dificultad ==1){
@@ -260,11 +248,10 @@ void guardarDB(PDB database){
 	if(!archivo.fail()){
 		archivo.write((char*) database, sizeof(*database));
 		archivo.close();
-		cout<<"Progreso guardado"<<endl;
 	}else{
-		cout<<"Error al abrir el archivo. guardarDB"<<endl;
+		cout<<"Error al abrir base de datos."<<endl;
+		system("pause");
 	}
-
 }
 
 // busca un usuario por su nombre y contrasenia
@@ -281,7 +268,8 @@ Usuario AbrirUsuario (PDB database, bool &sale){
 			cin.ignore(1000, '\n');
 			cout<<"Ingrese nombre de usuario: ";
 			cin >> ws;
-			gets(nombre);
+			fgets(nombre, 11, stdin);
+			for (int i=0; i<11; i++) if (nombre[i]=='\n') nombre[i] = '\0';
             cin.ignore(1000, '\n');
 			while(!encontrado && cont < QU){
 				strcpy(n, (database->usuarios[cont].nombre));
@@ -300,7 +288,8 @@ Usuario AbrirUsuario (PDB database, bool &sale){
             encriptar(Puser, true);
 			cout<<"Ingrese su contrasena: ";
 			cin>>ws;
-			gets(pwrd);
+			fgets(pwrd, 13, stdin);
+			for (int i=0; i<13; i++) if (pwrd[i]=='\n') pwrd[i] = '\0';
             cin.ignore(1000, '\n');
 			if (strcmp(pwrd, p)==0) coincide = true;
 			else{
@@ -330,7 +319,6 @@ DB AbrirBaseDeDatos(){
 		if (archivo.eof()){
 			crearBaseDeDatos(aux);
 			database = *aux;
-            cout<<"creando base de datos 1"<<endl; //borrar
 		}
 		archivo.close();
 		
@@ -344,8 +332,6 @@ DB AbrirBaseDeDatos(){
 		arch.write((char*) aux, sizeof(*aux));
 		database = *aux;
 		arch.close();
-		//puts("Error al abrir el archivo.(Abrir base de datos)");
-        cout<<"creando base de datos 2"<<endl; //borrar
 
 	}
 	return database;
@@ -607,51 +593,26 @@ void Puntaje(int opcion, PDB db){
                 }
         }
 } 
-                        
-// Antes de ejecutarla chequear que cantidad_usuarios > 0
-		/*
 void OrdenarUsuarios (PDB database){
 	Usuario aux;
-	int cont = 0, mayor;
+	int mayor, contador = 0;
 	double maximo;
 	if (database -> cantidad_usuarios > 0){
-		while (cont < database -> cantidad_usuarios){
-			mayor = cont;
+		for (int i = 0; i < (database -> cantidad_usuarios - 1); i++){
+			mayor = i;
 			maximo = database -> usuarios[mayor].ganadas;
-			for (int i = cont; i<database -> cantidad_usuarios; i++){
-				if (database -> usuarios[i].ganadas > maximo){
-					mayor = i;
+			for (int j = i; j < database -> cantidad_usuarios; j++){
+				if (database -> usuarios[j].ganadas > maximo){
+					mayor = j;
 					maximo = database -> usuarios[mayor].ganadas;
 				}
 			}
-			aux = database -> usuarios[cont];
-			database -> usuarios[cont] = database -> usuarios[mayor];
+			aux = database -> usuarios[i];
+			database -> usuarios[i] = database -> usuarios[mayor];
 			database -> usuarios[mayor] = aux;
-			cont ++;
 		}
 	}
 }
-		*/
-	void OrdenarUsuarios (PDB database){
-		Usuario aux;
-		int mayor, contador = 0;
-		double maximo;
-		if (database -> cantidad_usuarios > 0){
-			for (int i = 0; i < (database -> cantidad_usuarios - 1); i++){
-				mayor = i;
-				maximo = database -> usuarios[mayor].ganadas;
-				for (int j = i; j < database -> cantidad_usuarios; j++){
-					if (database -> usuarios[j].ganadas > maximo){
-						mayor = j;
-						maximo = database -> usuarios[mayor].ganadas;
-					}
-				}
-				aux = database -> usuarios[i];
-				database -> usuarios[i] = database -> usuarios[mayor];
-				database -> usuarios[mayor] = aux;
-			}
-		}
-	}
 
 void mejorXNiv(PDB db){// setea los valores de mejores puntajes en db
         int mejPuntaje = 0, indice = -1;
