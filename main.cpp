@@ -73,11 +73,7 @@ int menuUsuarios(){
 	Usuario user;
 	database = AbrirBaseDeDatos();
 	QUsuarios = database.cantidad_usuarios;
-	
 
-	
-  
-  
 	database = AbrirBaseDeDatos();
 	
 	QUsuarios = database.cantidad_usuarios;
@@ -121,6 +117,7 @@ int menuUsuarios(){
 			}else{
 				cout<<"Ingrese una opcion y pulse enter:"<<endl;
 				cout<<"1: Ingresar"<<endl;
+				cout<<"Cantidad maxima de usuarios alcanzada."<<endl;
 				cout<<"3: Ver puntajes"<<endl;
 				cout<<"4: Salir del juego"<<endl;
 				
@@ -141,9 +138,6 @@ int menuUsuarios(){
 	switch(dev){
 		case 1:
 			user = AbrirUsuario(&database, sale);
-			/*
-			crearPartidasArtificial(&user);
-			*/
 			if (!sale){
 				do {
 					system("CLS");
@@ -458,14 +452,14 @@ bool confirmacion(){
 		}else if(rta == 's'){
 			devolver = true;
 			conf = false;
-			/*
+			
 			system("CLS");
 			cout<<"    ___    ____  ________  _____"<<endl;
 			cout<<"   /   |  / __ \\/  _/ __ \\/ ___/"<<endl;
 			cout<<"  / /| | / / / // // / / /\\__ \\ "<<endl;
 			cout<<" / ___ |/ /_/ // // /_/ /___/ / "<<endl;
 			cout<<"/_/  |_/_____/___/\\____//____/  "<<endl;
-			*/
+			
 		}else{
 			system("CLS");
 			devolver = false;
@@ -474,7 +468,6 @@ bool confirmacion(){
 	}
 	return devolver;
 }
-											
 bool entradaPorTeclado (int dificultad, char &x, char &y, char &z, int tlX, int tlY){
 	bool seVa = false, termino = false;
 	while (!seVa && !termino){
