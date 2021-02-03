@@ -609,6 +609,7 @@ void Puntaje(int opcion, PDB db){
 } 
                         
 // Antes de ejecutarla chequear que cantidad_usuarios > 0
+		/*
 void OrdenarUsuarios (PDB database){
 	Usuario aux;
 	int cont = 0, mayor;
@@ -616,11 +617,11 @@ void OrdenarUsuarios (PDB database){
 	if (database -> cantidad_usuarios > 0){
 		while (cont < database -> cantidad_usuarios){
 			mayor = cont;
-			maximo = database -> usuarios[0].ganadas;
+			maximo = database -> usuarios[mayor].ganadas;
 			for (int i = cont; i<database -> cantidad_usuarios; i++){
 				if (database -> usuarios[i].ganadas > maximo){
 					mayor = i;
-					maximo = database -> usuarios[i].ganadas;
+					maximo = database -> usuarios[mayor].ganadas;
 				}
 			}
 			aux = database -> usuarios[cont];
@@ -630,7 +631,27 @@ void OrdenarUsuarios (PDB database){
 		}
 	}
 }
-
+		*/
+	void OrdenarUsuarios (PDB database){
+		Usuario aux;
+		int mayor, contador = 0;
+		double maximo;
+		if (database -> cantidad_usuarios > 0){
+			for (int i = 0; i < (database -> cantidad_usuarios - 1); i++){
+				mayor = i;
+				maximo = database -> usuarios[mayor].ganadas;
+				for (int j = i; j < database -> cantidad_usuarios; j++){
+					if (database -> usuarios[j].ganadas > maximo){
+						mayor = j;
+						maximo = database -> usuarios[mayor].ganadas;
+					}
+				}
+				aux = database -> usuarios[i];
+				database -> usuarios[i] = database -> usuarios[mayor];
+				database -> usuarios[mayor] = aux;
+			}
+		}
+	}
 
 void mejorXNiv(PDB db){// setea los valores de mejores puntajes en db
         int mejPuntaje = 0, indice = -1;
