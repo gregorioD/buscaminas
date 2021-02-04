@@ -8,16 +8,22 @@ using namespace std;
 
 int main(){
         DB db = AbrirBaseDeDatos();
-        crearUsuariosArt(&db, 40);
+        crearUsuariosArt(&db, 10);
         for (int i=0;i<db.cantidad_usuarios;i++){
                 crearPartidasArtificial(&(db.usuarios[i])); //crea un set de partidas para cada user
-                ordenarPartidas(db.usuarios[i], 1);
-                ordenarPartidas(db.usuarios[i], 2);
-                ordenarPartidas(db.usuarios[i], 3);
+                //cout<<"antes facil: "<<db.usuarios[i].partidasfacil[0].puntaje<<endl;
+                ordenarPartidas(&db.usuarios[i], 1);
+                //cout<<"desp facil: "<<db.usuarios[i].partidasfacil[0].puntaje<<endl;
+                ordenarPartidas(&db.usuarios[i], 2);
+                ordenarPartidas(&db.usuarios[i], 3);
 
         }
-        mejorXNiv(&db);             // actualiza el ranking 
         OrdenarUsuarios(&db);
+        cout<<"Antes mxn: "<<endl;
+        cout<<db.mejorFacil<<" "<<db.mejorMedio<<" "<<db.mejorDificil<<endl;
+        mejorXNiv(&db);             // actualiza el ranking 
+        cout<<"Desp mxn: "<<endl;
+        cout<<db.mejorFacil<<" "<<db.mejorMedio<<" "<<db.mejorDificil<<endl;
         guardarDB(&db);
 
         
