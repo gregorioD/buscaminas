@@ -87,10 +87,11 @@ int menuUsuarios(){
 			cout<<"3: Ver puntajes"<<endl;
 			cout<<"4: Salir del juego"<<endl;
 			
+			cin >> ws;
 			cin>>opcion;
 			if (opcion<1 || opcion>4){
 				cout<<"La opcion ingresada no es valida, ingrese un valor entre 1 y 4:"<<endl;
-				
+				//cin >> opcion;
 			}else{
 				no_termino = false;
 				system("CLS");
@@ -103,11 +104,11 @@ int menuUsuarios(){
 				cout<<"2: Crear usuario"<<endl;
 				cout<<"3: Ver puntajes"<<endl;
 				cout<<"4: Salir del juego"<<endl;
-				
+				cin>>ws;
 				cin>>opcion;
 				if (opcion<2 || opcion>4){
 					cout<<"La opcion ingresada no es valida, ingrese un valor entre 2 y 4:"<<endl;
-					
+					//cin >> opcion;
 				}else{
 					no_termino = false;
 					system("CLS");
@@ -120,11 +121,11 @@ int menuUsuarios(){
 				cout<<"Cantidad maxima de usuarios alcanzada."<<endl;
 				cout<<"3: Ver puntajes"<<endl;
 				cout<<"4: Salir del juego"<<endl;
-				
+				cin>>ws;
 				cin>>opcion;
 				if (opcion<1 || opcion>4 || opcion == 2){
 					cout<<"La opcion ingresada no es valida, cantidad m�xima de usuarios alcanzada, ingrese un valor entre 1 y 4:"<<endl;
-					
+					// cin>>opcion;
 				}else{
 					no_termino = false;
 					system("CLS");
