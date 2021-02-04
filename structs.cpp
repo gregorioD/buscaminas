@@ -198,6 +198,10 @@ void partidaAUsuario(PPartida match, PUsuario usr){
 		// guardado de partida
 		int menor_punt = 10000000, pos=-1;
 		if (match -> dificultad ==1){
+            //cout<<"Antes pAU 1: ";
+            //for (int i=0;i<usr->tlfacil;i++) cout<<usr->partidasfacil[i].puntaje<<" ";
+            //cout<<endl;
+
 			if (usr->tlfacil==10) {
 				for (int i=0;i<10;i++){
 					if (usr->partidasfacil[i].puntaje < menor_punt){
@@ -210,8 +214,16 @@ void partidaAUsuario(PPartida match, PUsuario usr){
 				usr->partidasfacil[usr->tlfacil] = *match;
 				usr->tlfacil++;
 			}
+            //cout<<"Despues pAU 1: ";
+            //for (int i=0;i<usr->tlfacil;i++) cout<<usr->partidasfacil[i].puntaje<<" ";
+            //cout<<endl;
+
 		}
 		else if (match -> dificultad ==2){
+            //cout<<"Antes pAU 2: ";
+            //for (int i=0;i<usr->tlmedio;i++) cout<<usr->partidasmedio[i].puntaje<<" ";
+            //cout<<endl;
+
 			if (usr->tlmedio ==10){
 				for (int j=0;j<10;j++){
 					if (usr->partidasmedio[j].puntaje < menor_punt){
@@ -224,8 +236,16 @@ void partidaAUsuario(PPartida match, PUsuario usr){
 				usr->partidasmedio[usr->tlmedio] = *match;
 				usr->tlmedio++;
 			}
+            //cout<<"Despues pAU 2: ";
+            //for (int i=0;i<usr->tlmedio;i++) cout<<usr->partidasmedio[i].puntaje<<" ";
+            //cout<<endl;
+
 		}
 		else{
+            //cout<<"Antes pAU 3: ";
+            //for (int i=0;i<usr->tldificil;i++) cout<<usr->partidasdificil[i].puntaje<<" ";
+            //cout<<endl;
+
 			if (usr->tldificil==10){
 				for (int k=0;k<10;k++){
 					if (usr->partidasdificil[k].puntaje < menor_punt){
@@ -238,6 +258,10 @@ void partidaAUsuario(PPartida match, PUsuario usr){
 				usr->partidasdificil[usr->tldificil] = *match;
 				usr->tldificil++;
 			}
+            //cout<<"Despues pAU 3: ";
+            //for (int i=0;i<usr->tldificil;i++) cout<<usr->partidasdificil[i].puntaje<<" ";
+            //cout<<endl;
+        
 		}
 }
 
@@ -643,45 +667,50 @@ void mejorXNiv(PDB db){// setea los valores de mejores puntajes en db
         db->mejorDificil = indice;
 }
                         
-void ordenarPartidas(Usuario user, int dificultad){
+void ordenarPartidas(PUsuario user, int dificultad){
         // Coloca la partida con el mayor puntaje en el indice 0 de cada arreglo 
         Partida aux;
         int pIndex, usrMax = 0;
 
-        for (int j=0;j<user.tlfacil;j++){
-                if (user.partidasfacil[j].puntaje > usrMax){
-                        pIndex = j;
-                        usrMax = user.partidasfacil[j].puntaje;
+        switch(dificultad){
+                case 1:
+                for (int j=0;j<user->tlfacil;j++){
+                        if (user->partidasfacil[j].puntaje > usrMax){
+                                pIndex = j;
+                                usrMax = user->partidasfacil[j].puntaje;
+                        }
                 }
-        }
-        aux = user.partidasfacil[pIndex];
-        user.partidasfacil[pIndex] = user.partidasfacil[0];
-        user.partidasfacil[0] = aux;
-
-        usrMax = 0;
-
-        for (int j=0;j<user.tlmedio;j++){
-                if (user.partidasmedio[j].puntaje > usrMax){
-                        pIndex = j;
-                        usrMax = user.partidasmedio[j].puntaje;
-                }
-        }
-        aux = user.partidasmedio[pIndex];
-        user.partidasmedio[pIndex] = user.partidasmedio[0];
-        user.partidasmedio[0] = aux;
-
-
-        usrMax = 0;
+                aux = user->partidasfacil[pIndex];
+                user->partidasfacil[pIndex] = user->partidasfacil[0];
+                user->partidasfacil[0] = aux;
         
-        for (int j=0;j<user.tldificil;j++){
-                if (user.partidasdificil[j].puntaje > usrMax){
-                        pIndex = j;
-                        usrMax = user.partidasdificil[j].puntaje;
+                break;
+                case 2:
+                for (int j=0;j<user->tlmedio;j++){
+                        if (user->partidasmedio[j].puntaje > usrMax){
+                                pIndex = j;
+                                usrMax = user->partidasmedio[j].puntaje;
+                        }
                 }
+                aux = user->partidasmedio[pIndex];
+                user->partidasmedio[pIndex] = user->partidasmedio[0];
+                user->partidasmedio[0] = aux;
+
+        
+        
+                break;
+                case 3:
+                for (int j=0;j<user->tldificil;j++){
+                        if (user->partidasdificil[j].puntaje > usrMax){
+                                pIndex = j;
+                                usrMax = user->partidasdificil[j].puntaje;
+                        }
+                }
+                aux = user->partidasdificil[pIndex];
+                user->partidasdificil[pIndex] = user->partidasdificil[0];
+                user->partidasdificil[0] = aux;
+
         }
-        aux = user.partidasdificil[pIndex];
-        user.partidasdificil[pIndex] = user.partidasdificil[0];
-        user.partidasdificil[0] = aux;
 }
 
 void strFecha(char fecha[11], Fecha fech){

@@ -50,7 +50,7 @@ Usuario AbrirUsuario (PDB database, bool &sale);
 DB AbrirBaseDeDatos();
 void OrdenarUsuarios (PDB database);
 void mejorXNiv(PDB db);
-void ordenarPartidas(Usuario user, int dificultad);
+void ordenarPartidas(PUsuario user, int dificultad);
 void strFecha(char fecha[11], Fecha fech);
 void DibujarCuad(const char *str, int ancho, char separador='|');
 void Puntaje(int opcion, PDB);

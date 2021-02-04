@@ -152,9 +152,9 @@ int menuUsuarios(){
 						}
                         // actualizacion de mejores partidas, ranking y mejores usuarios x nivel
 						partidaAUsuario(&match, &user);
-                        ordenarPartidas(user, dificultad);
-                        mejorXNiv(&database);
+                        ordenarPartidas(&user, dificultad);
                         OrdenarUsuarios(&database);
+                        mejorXNiv(&database);
 					}
 				} while (dificultad != 0);
 				devolver = 1;
