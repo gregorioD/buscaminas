@@ -66,7 +66,7 @@ int main(){
 	
 int menuUsuarios(){
 	int opcion, devolver, dev, puntos_jugar, dificultad, QUsuarios, op_pto;
-	char caso;
+	char caso, op;
 	bool no_termino = true, sale;
 	DB database;
 	Partida match;
@@ -88,10 +88,11 @@ int menuUsuarios(){
 			cout<<"4: Salir del juego"<<endl;
 			
 			cin >> ws;
-			cin>>opcion;
+			cin>>op;
+			opcion = op - 48;
+			
 			if (opcion<1 || opcion>4){
 				cout<<"La opcion ingresada no es valida, ingrese un valor entre 1 y 4:"<<endl;
-				//cin >> opcion;
 			}else{
 				no_termino = false;
 				system("CLS");
@@ -105,7 +106,8 @@ int menuUsuarios(){
 				cout<<"3: Ver puntajes"<<endl;
 				cout<<"4: Salir del juego"<<endl;
 				cin>>ws;
-				cin>>opcion;
+				cin>>op;
+				opcion = op - 48;
 				if (opcion<2 || opcion>4){
 					cout<<"La opcion ingresada no es valida, ingrese un valor entre 2 y 4:"<<endl;
 					//cin >> opcion;
@@ -122,7 +124,8 @@ int menuUsuarios(){
 				cout<<"3: Ver puntajes"<<endl;
 				cout<<"4: Salir del juego"<<endl;
 				cin>>ws;
-				cin>>opcion;
+				cin>>op;
+				opcion = op - 48;
 				if (opcion<1 || opcion>4 || opcion == 2){
 					cout<<"La opcion ingresada no es valida, cantidad m�xima de usuarios alcanzada, ingrese un valor entre 1 y 4:"<<endl;
 					// cin>>opcion;
@@ -173,7 +176,8 @@ int menuUsuarios(){
 			cout<<"2: Ranking de usuarios"<<endl;
 			cout<<"3: Mejores partidas por usuario"<<endl;
 			cout<<"0: Salir"<<endl;
-            cin>>op_pto;
+			cin>>op;
+			op_pto = op - 48;
 			while (op_pto>3 || op_pto<0){
 				system("CLS");
 				cout<<"Opcion no valida:"<<endl;
@@ -181,7 +185,8 @@ int menuUsuarios(){
 				cout<<"2: Ranking de usuarios"<<endl;
 				cout<<"3: Mejores partidas por usuario"<<endl;
 				cout<<"0: Salir"<<endl;
-				cin>>op_pto;
+				cin>>op;
+				op_pto = op - 48;
 			}
 			if(op_pto==0){
 				devolver = -1;
