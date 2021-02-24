@@ -65,7 +65,7 @@ int main(){
 }
 	
 int menuUsuarios(){
-	int opcion, devolver, dev, puntos_jugar, dificultad, QUsuarios, op_pto;
+	int opcion, devolver, dev, puntos_jugar, dificultad, QUsuarios, op_pto, indiceU;
 	char caso, op;
 	bool no_termino = true, sale;
 	DB database;
@@ -137,7 +137,7 @@ int menuUsuarios(){
 	}
 	switch(dev){
 		case 1:
-			user = AbrirUsuario(&database, sale);
+			user = AbrirUsuario(&database, sale, indiceU);
 			if (!sale){
 				do {
 					system("CLS");
@@ -149,13 +149,15 @@ int menuUsuarios(){
 						cout<<"se guardo partida"<<endl;
                         // actualizacion de mejores partidas, ranking y mejores usuarios x nivel
 						partidaAUsuario(&match, &user);
-						cout<<"partida a usuarii"<<endl;
+						usuarioADB(user, &database, indiceU);
+						cout<<"partida a usuario."<<endl;
                         ordenarPartidas(&user, dificultad);
 						cout<<"ordenar partidas."<<endl;
                         OrdenarUsuarios(&database);
 						cout<<"ordenar usuarios."<<endl;
                         mejorXNiv(&database);
 						cout<<"mejor por nivel"<<endl;
+						system("pause");
 					}
 				} while (dificultad != 0);
 				devolver = 1;
@@ -197,11 +199,12 @@ int menuUsuarios(){
 			devolver = -1;
 			break;
 	}
+	
 	OrdenarUsuarios(&database);
 	guardarDB(&database);
 	return devolver;
 }
-		
+
 int bAdyacentes(int x, int y, int tlx, int tly, bool Bombas[16][30]){
 	//las coordenadas de un punto
 	//devuelve un entero con la cantidad de bombas adyacentes
