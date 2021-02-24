@@ -73,10 +73,6 @@ int menuUsuarios(){
 	Usuario user;
 	database = AbrirBaseDeDatos();
 	QUsuarios = database.cantidad_usuarios;
-
-	database = AbrirBaseDeDatos();
-	
-	QUsuarios = database.cantidad_usuarios;
 	
 	while(no_termino){
 			system("CLS");
@@ -148,12 +144,18 @@ int menuUsuarios(){
 					dificultad = menu();
 					if (dificultad < 4 && dificultad>0){
 						puntos_jugar = jugar(dificultad, caso);
+						cout<<"termina el juego."<<endl;
 						GuardarPartida(&match, dificultad, puntos_jugar, caso);
+						cout<<"se guardo partida"<<endl;
                         // actualizacion de mejores partidas, ranking y mejores usuarios x nivel
 						partidaAUsuario(&match, &user);
+						cout<<"partida a usuarii"<<endl;
                         ordenarPartidas(&user, dificultad);
+						cout<<"ordenar partidas."<<endl;
                         OrdenarUsuarios(&database);
+						cout<<"ordenar usuarios."<<endl;
                         mejorXNiv(&database);
+						cout<<"mejor por nivel"<<endl;
 					}
 				} while (dificultad != 0);
 				devolver = 1;
@@ -358,8 +360,6 @@ int jugar (int dificultad, char &caso){
 	
 	while (NoPerdio && !Gano && SeQueda){
 		mostrarMatriz(tlX, tlY, Pantalla);
-		// borrar
-		mostrarBombas(tlX, tlY, Bombas);
 		
 		SeQueda = entradaPorTeclado(dificultad, coordX, coordY, accion, tlX, tlY);
 		if (SeQueda) {

@@ -192,9 +192,11 @@ void partidaAUsuario(PPartida match, PUsuario usr){
 		else if (match -> tipo == 'P') usr -> perd++;
 		else usr -> ab++;
 		int total = (usr -> gan) + (usr -> perd) + (usr -> ab);
-		usr -> ganadas = usr -> gan * 100.0 / total;	
-		usr -> perdidas = usr -> perd * 100.0 / total;
-		usr -> abandonos = usr -> ab * 100.0 / total;
+		if (total != 0){
+			usr -> ganadas = usr -> gan * 100.0 / total;	
+			usr -> perdidas = usr -> perd * 100.0 / total;
+			usr -> abandonos = usr -> ab * 100.0 / total;
+		}
 		// guardado de partida
 		int menor_punt = 10000000, pos=-1;
 		if (match -> dificultad ==1){
@@ -678,21 +680,22 @@ void ordenarPartidas(PUsuario user, int dificultad){
         // Coloca la partida con el mayor puntaje en el indice 0 de cada arreglo 
         Partida aux;
         int pIndex, usrMax = 0;
-
         switch(dificultad){
                 case 1:
-                for (int j=0;j<user->tlfacil;j++){
-                        if (user->partidasfacil[j].puntaje > usrMax){
-                                pIndex = j;
-                                usrMax = user->partidasfacil[j].puntaje;
-                        }
-                }
-                aux = user->partidasfacil[pIndex];
-                user->partidasfacil[pIndex] = user->partidasfacil[0];
-                user->partidasfacil[0] = aux;
-        
+				if (user -> tlfacil > 1){
+					for (int j=0;j<user->tlfacil;j++){
+							if (user->partidasfacil[j].puntaje > usrMax){
+									pIndex = j;
+									usrMax = user->partidasfacil[j].puntaje;
+							}
+					}
+					aux = user->partidasfacil[pIndex];
+					user->partidasfacil[pIndex] = user->partidasfacil[0];
+					user->partidasfacil[0] = aux;
+				}
                 break;
                 case 2:
+				if (user-> tlmedio > 1){
                 for (int j=0;j<user->tlmedio;j++){
                         if (user->partidasmedio[j].puntaje > usrMax){
                                 pIndex = j;
@@ -702,11 +705,11 @@ void ordenarPartidas(PUsuario user, int dificultad){
                 aux = user->partidasmedio[pIndex];
                 user->partidasmedio[pIndex] = user->partidasmedio[0];
                 user->partidasmedio[0] = aux;
-
-        
+				}
         
                 break;
                 case 3:
+				if (user-> tldificil > 1){
                 for (int j=0;j<user->tldificil;j++){
                         if (user->partidasdificil[j].puntaje > usrMax){
                                 pIndex = j;
@@ -716,6 +719,7 @@ void ordenarPartidas(PUsuario user, int dificultad){
                 aux = user->partidasdificil[pIndex];
                 user->partidasdificil[pIndex] = user->partidasdificil[0];
                 user->partidasdificil[0] = aux;
+				}
 
         }
 }
